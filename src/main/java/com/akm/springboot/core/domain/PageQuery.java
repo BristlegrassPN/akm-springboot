@@ -6,8 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "分页查询参数")
 public class PageQuery<T> {
-    public static final int DEFAULT_PAGE_NUM = 1;
-    public static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int DEFAULT_PAGE_NUM = 1;
+    private static final int DEFAULT_PAGE_SIZE = 10;
 
     @ApiModelProperty(value = "当前页", example = "1")
     private Integer pageNum = DEFAULT_PAGE_NUM;
@@ -18,8 +18,8 @@ public class PageQuery<T> {
     @ApiModelProperty(value = "排序参数，形如:createTime desc,name asc", example = "1")
     private String orderBy;
 
-    @ApiModelProperty(value = "其他参数")
-    private T obj;
+    @ApiModelProperty(value = "其他查询参数")
+    private T condition;
 
     public int getPageNum() {
         return pageNum > 0 ? pageNum : DEFAULT_PAGE_NUM;
@@ -45,11 +45,11 @@ public class PageQuery<T> {
         this.orderBy = StringUtils.hump2underline(orderBy, false);
     }
 
-    public T getObj() {
-        return obj;
+    public T getCondition() {
+        return condition;
     }
 
-    public void setObj(T obj) {
-        this.obj = obj;
+    public void setCondition(T condition) {
+        this.condition = condition;
     }
 }
