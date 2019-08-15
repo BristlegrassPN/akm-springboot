@@ -10,6 +10,9 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  devtools:
+    livereload:
+      enabled: true
 mybatis:
   mapper-locations: classpath:com/kit/springboot/web/mapper/**/*.xml
 #  mapper-locations: classpath:mapper/**/*Mapper.xml
