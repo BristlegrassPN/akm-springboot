@@ -5,6 +5,7 @@ import com.akm.springboot.web.mapper.sys.SysDictMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class SysDictServiceImpl implements SysDictService {
@@ -27,6 +28,17 @@ public class SysDictServiceImpl implements SysDictService {
         return sysDictMapper.insertOrUpdateSelective(record);
     }
 
+    @Override
+    public List<SysDict> findByAll(SysDict record) {
+        return sysDictMapper.findByAll(record);
+    }
+
 }
+
+
+
+
+
+
 
 

@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "DemoExceptionApi", description = "全局异常处理测试")
+@Api(tags = {"全局异常处理测试"})
 @RestController
 @RequestMapping("/demo/exception")
 public class DemoExceptionApi {

@@ -12,7 +12,6 @@ public class SysDict implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键")
     private Integer id;
 
     /**
@@ -20,6 +19,12 @@ public class SysDict implements Serializable {
      */
     @ApiModelProperty(value = "字典编码（英文，多个单词下划线分隔）")
     private String type;
+
+    /**
+     * 类型名称
+     */
+    @ApiModelProperty(value = "类型名称")
+    private String typeName;
 
     /**
      * 名称（用于给用户展示）

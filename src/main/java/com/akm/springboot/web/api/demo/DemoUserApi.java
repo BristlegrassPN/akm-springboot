@@ -1,10 +1,10 @@
 package com.akm.springboot.web.api.demo;
 
-import com.github.pagehelper.PageHelper;
 import com.akm.springboot.core.domain.PageQuery;
 import com.akm.springboot.core.domain.PageResult;
 import com.akm.springboot.web.domain.demo.DemoUser;
 import com.akm.springboot.web.service.demo.DemoUserService;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "DemoUserApi", description = "用户管理，用于测试，可以随意增删该查")
+@Api(tags = {"用户管理api，用于测试，可以随意增删该查"})
 @RestController
 @RequestMapping("/demo/user")
 public class DemoUserApi {
 
+    private DemoUserService demoUserService;
+
     @Autowired
-    DemoUserService demoUserService;
+    DemoUserApi(DemoUserService service) {
+        this.demoUserService = service;
+    }
 
     @ApiOperation("新增/修改测试用户")
     @PostMapping("/op/insertOrUpdate")
@@ -29,8 +33,9 @@ public class DemoUserApi {
     @ApiOperation("分页查询用户列表")
     @PostMapping("/view/findPage")
     PageResult<DemoUser> findPage(@RequestBody(required = false) PageQuery<DemoUser> pageQuery) {
+        System.out.println("");
         PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize(), pageQuery.getOrderBy());
-        List<DemoUser> list = demoUserService.findByAll(pageQuery.getObj());
+        List<DemoUser> list = demoUserService.findByAll(pageQuery.getCondition());
         return new PageResult<>(list);
     }
 
