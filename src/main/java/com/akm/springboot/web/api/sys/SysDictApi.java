@@ -29,8 +29,8 @@ public class SysDictApi {
 
     @ApiOperation("新增/修改")
     @PostMapping("/op/insertOrUpdate")
-    int insertOrUpdate(@RequestBody SysDict SysDict) {
-        return sysDictService.insertOrUpdateSelective(SysDict);
+    int insertOrUpdate(@RequestBody SysDict record) {
+        return sysDictService.insertOrUpdateSelective(record);
     }
 
     @ApiOperation("分页查询")

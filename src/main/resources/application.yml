@@ -26,11 +26,11 @@ logging:
     root: info
     com.akm.springboot: debug
   path: C:\workspace\java\springboot\logs
-
 ---
+#debug: true
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/springboot?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/akm-springboot?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: root

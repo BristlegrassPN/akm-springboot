@@ -164,6 +164,6 @@
     <if test="seq != null">
       and seq=#{seq,jdbcType=INTEGER}
     </if>
-    order by create_time desc, seq
+    order by create_time desc, seq desc
   </select>
 </mapper>
