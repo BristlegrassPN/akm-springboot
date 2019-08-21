@@ -461,7 +461,6 @@ public class StringUtils {
         return toReturn.toString();
     }
 
-
     public static void main(String[] a) {
         String escapeXML = escapeXML("\\");
         System.out.println(escapeXML);

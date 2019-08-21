@@ -1,8 +1,8 @@
 package com.akm.springboot.web.api.sys;
 
 import com.akm.springboot.core.exception.BusinessException;
-import com.akm.springboot.web.domain.sys.SysApi;
-import com.akm.springboot.web.service.sys.SysApiService;
+import com.akm.springboot.web.domain.sys.SysResource;
+import com.akm.springboot.web.service.sys.SysResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,29 +10,29 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = {"后台接口管理api"})
+@Api(tags = {"前端资源(菜单/按钮)管理"})
 @RestController
-@RequestMapping("/sys/api")
-public class SysApiApi {
+@RequestMapping("/sys/resource")
+public class SysResourceApi {
 
-    private SysApiService sysApiService;
+    private SysResourceService sysResourceService;
 
     @Autowired
-    SysApiApi(SysApiService service) {
-        this.sysApiService = service;
+    SysResourceApi(SysResourceService service) {
+        this.sysResourceService = service;
     }
 
     @ApiOperation("新增/修改")
     @PostMapping("/op/insertOrUpdate")
-    int insertOrUpdate(@RequestBody SysApi record) {
-        return sysApiService.insertOrUpdateSelective(record);
+    int insertOrUpdate(@RequestBody SysResource record) {
+        return sysResourceService.insertOrUpdateSelective(record);
     }
 
 
     @ApiOperation("查询所有api")
     @PostMapping("/view/findAll")
-    List<SysApi> findAll() {
-        return sysApiService.findByAll(new SysApi());
+    List<SysResource> findAll() {
+        return sysResourceService.findByAll(new SysResource());
     }
 
     @ApiOperation("根据id批量删除")
@@ -41,7 +41,6 @@ public class SysApiApi {
         if (ids.isEmpty()) {
             throw new BusinessException("删除的编号不能为空");
         }
-        return sysApiService.updateDelById(ids);
+        return sysResourceService.updateDelById(ids);
     }
-
 }

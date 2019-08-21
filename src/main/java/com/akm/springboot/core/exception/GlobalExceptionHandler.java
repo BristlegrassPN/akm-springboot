@@ -4,6 +4,7 @@ import com.akm.springboot.core.domain.ResultBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,8 +68,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
             String method = ((HttpRequestMethodNotSupportedException) ex).getMethod();
             resultBean.setResult(String.format("请求方法[%s]不被支持,支持%s", method, supportedHttpMethods));
         }
+        if (ex instanceof NoHandlerFoundException) {
+            resultBean.setResult("未找到处理方法，请求url可能不正确：" + ex.toString());
+        }
         if (ex instanceof HttpMessageNotReadableException) {
-            resultBean.setResult("请求参数解析失败," + ex.toString());
+            resultBean.setResult("请求参数解析失败：" + ex.toString());
         }
         return new ResponseEntity<>(resultBean, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -81,6 +86,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
         this.consoleLog(request, ex);
         ResultBean resultBean = ResultBean.fail(ex.getCode(), ex.getMessage());
         return new ResponseEntity<>(resultBean, HttpStatus.NOT_EXTENDED);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<ResultBean> dataIntegrityViolationException(HttpServletRequest request, Exception ex) {
+        this.consoleLog(request, ex);
+        ResultBean<String> resultBean = ResultBean.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "", "数据库执行操作异常：" + ex.toString());
+        return new ResponseEntity<>(resultBean, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**

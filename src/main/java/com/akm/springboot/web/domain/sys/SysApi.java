@@ -2,9 +2,8 @@ package com.akm.springboot.web.domain.sys;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 @ApiModel(value = "com.akm.springboot.web.domain.sys.SysApi")
 @Data
@@ -13,18 +12,18 @@ public class SysApi implements Serializable {
      * 主键
      */
     @ApiModelProperty(value = "主键")
-    private Integer id;
+    private String id;
 
     /**
-     * 父id
+     * 父id，0表示根节点
      */
-    @ApiModelProperty(value = "父id")
-    private Integer parentId;
+    @ApiModelProperty(value = "父id，0表示根节点")
+    private String parentId;
 
     /**
-     * 名称
+     * api接口名称
      */
-    @ApiModelProperty(value = "名称")
+    @ApiModelProperty(value = "api接口名称")
     private String name;
 
     /**
@@ -44,12 +43,6 @@ public class SysApi implements Serializable {
      */
     @ApiModelProperty(value = "排序（倒序）")
     private Integer seq;
-
-    /**
-     * 删除标志，默认0，删除1
-     */
-    @ApiModelProperty(value = "删除标志，默认0，删除1")
-    private Byte del;
 
     private static final long serialVersionUID = 1L;
 }

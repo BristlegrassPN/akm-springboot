@@ -7,13 +7,12 @@ import com.akm.springboot.web.service.sys.SysDictService;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = {"数据字典api"})
 @RestController
@@ -39,6 +38,12 @@ public class SysDictApi {
         PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize(), pageQuery.getOrderBy());
         List<SysDict> list = sysDictService.findByAll(pageQuery.getCondition());
         return new PageResult<>(list);
+    }
+
+    @ApiOperation("根据字典类型查询")
+    @PostMapping("/view/findByType")
+    List<Map<String, Object>> findByType(@ApiParam(value = "字典类型", required = true) @RequestParam String type) {
+        return sysDictService.findByType(type);
     }
 
 }

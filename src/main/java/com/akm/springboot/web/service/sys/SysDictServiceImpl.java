@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysDictServiceImpl implements SysDictService {
@@ -31,6 +32,11 @@ public class SysDictServiceImpl implements SysDictService {
     @Override
     public List<SysDict> findByAll(SysDict record) {
         return sysDictMapper.findByAll(record);
+    }
+
+    @Override
+    public List<Map<String, Object>> findByType(String type) {
+        return sysDictMapper.findByType(type);
     }
 
 }

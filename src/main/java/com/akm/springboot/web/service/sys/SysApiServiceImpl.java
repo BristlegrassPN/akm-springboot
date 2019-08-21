@@ -1,5 +1,7 @@
 package com.akm.springboot.web.service.sys;
 
+import com.akm.springboot.core.utils.Snowflake;
+import com.akm.springboot.core.utils.StringUtils;
 import com.akm.springboot.web.domain.sys.SysApi;
 import com.akm.springboot.web.mapper.sys.SysApiMapper;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class SysApiServiceImpl implements SysApiService {
 
     @Override
     public int insertOrUpdateSelective(SysApi record) {
+        if (StringUtils.isBlank(record.getId())) {
+            record.setId(Snowflake.uuid());
+        }
         return sysApiMapper.insertOrUpdateSelective(record);
     }
 
@@ -33,6 +38,7 @@ public class SysApiServiceImpl implements SysApiService {
         return sysApiMapper.updateDelById(ids);
     }
 }
+
 
 
 

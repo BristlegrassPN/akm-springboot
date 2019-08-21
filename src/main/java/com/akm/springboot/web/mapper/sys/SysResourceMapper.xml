@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.akm.springboot.web.mapper.sys.SysApiMapper">
-  <resultMap id="BaseResultMap" type="com.akm.springboot.web.domain.sys.SysApi">
+<mapper namespace="com.akm.springboot.web.mapper.sys.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.akm.springboot.web.domain.sys.SysResource">
     <!--@mbg.generated-->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="uri" jdbcType="VARCHAR" property="uri" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="client_type" jdbcType="TINYINT" property="clientType" />
+    <result column="enable" jdbcType="BOOLEAN" property="enable" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, parent_id, `name`, uri, remark, seq
+    id, parent_id, `type`, `name`, code, remark, seq, client_type, `enable`
   </sql>
-  <insert id="insertOrUpdate" parameterType="com.akm.springboot.web.domain.sys.SysApi">
+  <insert id="insertOrUpdate" parameterType="com.akm.springboot.web.domain.sys.SysResource">
     <!--@mbg.generated-->
-    insert into sys_api
-    (id, parent_id, `name`, uri, remark, seq)
+    insert into sys_resource
+    (id, parent_id, `type`, `name`, code, remark, seq, client_type, `enable`)
     values
-    (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{uri,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER})
+    (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{seq,jdbcType=INTEGER}, #{clientType,jdbcType=TINYINT}, #{enable,jdbcType=BOOLEAN}
+      )
     on duplicate key update 
     id = #{id,jdbcType=VARCHAR}, 
     parent_id = #{parentId,jdbcType=VARCHAR}, 
+    `type` = #{type,jdbcType=TINYINT}, 
     `name` = #{name,jdbcType=VARCHAR}, 
-    uri = #{uri,jdbcType=VARCHAR}, 
+    code = #{code,jdbcType=VARCHAR}, 
     remark = #{remark,jdbcType=VARCHAR}, 
-    seq = #{seq,jdbcType=INTEGER}
+    seq = #{seq,jdbcType=INTEGER}, 
+    client_type = #{clientType,jdbcType=TINYINT}, 
+    `enable` = #{enable,jdbcType=BOOLEAN}
   </insert>
-  <insert id="insertOrUpdateSelective" parameterType="com.akm.springboot.web.domain.sys.SysApi">
+  <insert id="insertOrUpdateSelective" parameterType="com.akm.springboot.web.domain.sys.SysResource">
     <!--@mbg.generated-->
-    insert into sys_api
+    insert into sys_resource
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -39,17 +47,26 @@
       <if test="parentId != null">
         parent_id,
       </if>
+      <if test="type != null">
+        `type`,
+      </if>
       <if test="name != null">
         `name`,
       </if>
-      <if test="uri != null">
-        uri,
+      <if test="code != null">
+        code,
       </if>
       <if test="remark != null">
         remark,
       </if>
       <if test="seq != null">
         seq,
+      </if>
+      <if test="clientType != null">
+        client_type,
+      </if>
+      <if test="enable != null">
+        `enable`,
       </if>
     </trim>
     values
@@ -60,17 +77,26 @@
       <if test="parentId != null">
         #{parentId,jdbcType=VARCHAR},
       </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="uri != null">
-        #{uri,jdbcType=VARCHAR},
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
       <if test="seq != null">
         #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="clientType != null">
+        #{clientType,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=BOOLEAN},
       </if>
     </trim>
     on duplicate key update 
@@ -81,11 +107,14 @@
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=VARCHAR},
       </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="uri != null">
-        uri = #{uri,jdbcType=VARCHAR},
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -93,26 +122,35 @@
       <if test="seq != null">
         seq = #{seq,jdbcType=INTEGER},
       </if>
+      <if test="clientType != null">
+        client_type = #{clientType,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null">
+        `enable` = #{enable,jdbcType=BOOLEAN},
+      </if>
     </trim>
   </insert>
 
-<!--auto generated by MybatisCodeHelper on 2019-08-15-->
+<!--auto generated by MybatisCodeHelper on 2019-08-19-->
   <select id="findByAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from sys_api
+    from sys_resource
     where del = false
     <if test="id != null">
-      and id=#{id,jdbcType=INTEGER}
+      and id=#{id,jdbcType=BIGINT}
     </if>
     <if test="parentId != null">
       and parent_id=#{parentId,jdbcType=INTEGER}
     </if>
+    <if test="type != null">
+      and `type`=#{type,jdbcType=TINYINT}
+    </if>
     <if test="name != null">
       and `name`=#{name,jdbcType=VARCHAR}
     </if>
-    <if test="uri != null">
-      and uri=#{uri,jdbcType=VARCHAR}
+    <if test="code != null">
+      and code=#{code,jdbcType=VARCHAR}
     </if>
     <if test="remark != null">
       and remark=#{remark,jdbcType=VARCHAR}
@@ -120,11 +158,16 @@
     <if test="seq != null">
       and seq=#{seq,jdbcType=INTEGER}
     </if>
-    order by seq desc
+    <if test="clientType != null">
+      and client_type=#{clientType,jdbcType=TINYINT}
+    </if>
+    <if test="enable != null">
+      and `enable`=#{enable,jdbcType=BOOLEAN}
+    </if>
   </select>
 
   <update id="updateDelById">
-    update sys_api
+    update sys_resource
     set del=true
     where id in
     <foreach close=")" collection="list" item="item" open="(" separator=", ">
