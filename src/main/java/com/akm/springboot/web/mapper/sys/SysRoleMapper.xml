@@ -1,64 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.akm.springboot.web.mapper.sys.SysResourceMapper">
-  <resultMap id="BaseResultMap" type="com.akm.springboot.web.domain.sys.SysResource">
+<mapper namespace="com.akm.springboot.web.mapper.sys.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.akm.springboot.web.domain.sys.SysRole">
+    <!--@mbg.generated-->
     <id column="id" jdbcType="VARCHAR" property="id"/>
-    <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
-    <result column="type" jdbcType="TINYINT" property="type"/>
     <result column="name" jdbcType="VARCHAR" property="name"/>
-    <result column="code" jdbcType="VARCHAR" property="code"/>
     <result column="remark" jdbcType="VARCHAR" property="remark"/>
     <result column="seq" jdbcType="INTEGER" property="seq"/>
     <result column="client_type" jdbcType="TINYINT" property="clientType"/>
     <result column="enable" jdbcType="BOOLEAN" property="enable"/>
-    <collection property="apiIdList" ofType="java.lang.String">
+    <collection property="resourceIdList" ofType="java.lang.String">
       <constructor>
-        <arg column="apiId"/>
+        <arg column="resourceId"/>
       </constructor>
     </collection>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, parent_id, `type`, `name`, code, remark, seq, client_type, `enable`
+    id, `name`, remark, seq, client_type, `enable`
   </sql>
-  <insert id="insertOrUpdate" parameterType="com.akm.springboot.web.domain.sys.SysResource">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--@mbg.generated-->
-    insert into sys_resource
-    (id, parent_id, `type`, `name`, code, remark, seq, client_type, `enable`)
+    delete from sys_role
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertOrUpdate" parameterType="com.akm.springboot.web.domain.sys.SysRole">
+    <!--@mbg.generated-->
+    insert into sys_role
+    (id, `name`, remark, seq, client_type, `enable`)
     values
-    (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
-    #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-    #{seq,jdbcType=INTEGER}, #{clientType,jdbcType=TINYINT}, #{enable,jdbcType=BOOLEAN}
-    )
+    (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER},
+    #{clientType,jdbcType=TINYINT}, #{enable,jdbcType=BOOLEAN})
     on duplicate key update
     id = #{id,jdbcType=VARCHAR},
-    parent_id = #{parentId,jdbcType=VARCHAR},
-    `type` = #{type,jdbcType=TINYINT},
     `name` = #{name,jdbcType=VARCHAR},
-    code = #{code,jdbcType=VARCHAR},
     remark = #{remark,jdbcType=VARCHAR},
     seq = #{seq,jdbcType=INTEGER},
     client_type = #{clientType,jdbcType=TINYINT},
     `enable` = #{enable,jdbcType=BOOLEAN}
   </insert>
-  <insert id="insertOrUpdateSelective" parameterType="com.akm.springboot.web.domain.sys.SysResource">
+  <insert id="insertOrUpdateSelective" parameterType="com.akm.springboot.web.domain.sys.SysRole">
     <!--@mbg.generated-->
-    insert into sys_resource
+    insert into sys_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="parentId != null">
-        parent_id,
-      </if>
-      <if test="type != null">
-        `type`,
-      </if>
       <if test="name != null">
         `name`,
-      </if>
-      <if test="code != null">
-        code,
       </if>
       <if test="remark != null">
         remark,
@@ -78,17 +67,8 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="parentId != null">
-        #{parentId,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=TINYINT},
-      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -108,17 +88,8 @@
       <if test="id != null">
         id = #{id,jdbcType=VARCHAR},
       </if>
-      <if test="parentId != null">
-        parent_id = #{parentId,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        `type` = #{type,jdbcType=TINYINT},
-      </if>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -137,20 +108,17 @@
 
   <select id="findByAll" resultMap="BaseResultMap">
     select
-    resource.id,
-    resource.parent_id,
-    resource.`type`,
-    resource.`name`,
-    resource.code,
-    resource.remark,
-    resource.seq,
-    resource.client_type,
-    resource.`enable`,
-    x.api_id apiId
-    from sys_resource resource
-    left join sys_resource_api x
-    on resource.id = x.resource_id
-    where del = false
+    role.id,
+    role.`name`,
+    role.remark,
+    role.seq,
+    role.client_type,
+    role.`enable`,
+    x.resource_id resourceId
+    from sys_role role
+    left join sys_role_resource x
+    on role.id = x.role_id
+    where 1=1 and del = false
     <if test="clientType != null">
       and client_type=#{clientType,jdbcType=TINYINT}
     </if>
@@ -161,12 +129,11 @@
   </select>
 
   <update id="batchDel">
-    update sys_resource
+    update sys_role
     set del=true
     where id in
     <foreach close=")" collection="list" item="item" open="(" separator=", ">
       #{item,jdbcType=INTEGER}
     </foreach>
   </update>
-
 </mapper>

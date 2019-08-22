@@ -30,13 +30,12 @@ public class SysResourceServiceImpl implements SysResourceService {
 
     @Override
     public List<SysResource> findByAll(SysResource sysResource) {
-        List<SysResource> all = sysResourceMapper.findByAll(sysResource);
-        return all;
+        return sysResourceMapper.findByAll(sysResource);
     }
 
     @Override
-    public int updateDelById(List<String> idList) {
-        return sysResourceMapper.updateDelById(idList);
+    public int batchDel(List<String> idList) {
+        return sysResourceMapper.batchDel(idList);
     }
 }
 

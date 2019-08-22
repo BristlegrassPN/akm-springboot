@@ -46,7 +46,7 @@ public class SysResourceApi {
         if (idList.isEmpty()) {
             throw new BusinessException("删除的编号不能为空");
         }
-        return sysResourceService.updateDelById(idList);
+        return sysResourceService.batchDel(idList);
     }
 
     @ApiOperation("给资源分配api")

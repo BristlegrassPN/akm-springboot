@@ -41,7 +41,7 @@ public class SysApiApi {
         if (idList.isEmpty()) {
             throw new BusinessException("删除的编号不能为空");
         }
-        return sysApiService.updateDelById(idList);
+        return sysApiService.batchDel(idList);
     }
 
 }

@@ -123,7 +123,7 @@
     order by seq desc
   </select>
 
-  <update id="updateDelById">
+  <update id="batchDel">
     update sys_api
     set del=true
     where id in

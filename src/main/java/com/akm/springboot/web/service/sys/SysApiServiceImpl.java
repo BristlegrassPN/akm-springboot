@@ -34,8 +34,8 @@ public class SysApiServiceImpl implements SysApiService {
     }
 
     @Override
-    public int updateDelById(List<String> idList) {
-        return sysApiMapper.updateDelById(idList);
+    public int batchDel(List<String> idList) {
+        return sysApiMapper.batchDel(idList);
     }
 }
 
