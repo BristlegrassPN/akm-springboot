@@ -2,8 +2,10 @@ package com.akm.springboot.web.domain.sys;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.List;
 
 @ApiModel(value = "com.akm.springboot.web.domain.sys.SysResource")
 @Data
@@ -63,4 +65,6 @@ public class SysResource implements Serializable {
     private Boolean enable;
 
     private static final long serialVersionUID = 1L;
+
+    private List<String> apiIdList;
 }

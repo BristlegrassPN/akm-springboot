@@ -37,11 +37,11 @@ public class SysApiApi {
 
     @ApiOperation("根据id批量删除")
     @DeleteMapping("/op/batchDel")
-    int batchDel(@RequestBody List<String> ids) {
-        if (ids.isEmpty()) {
+    int batchDel(@RequestBody List<String> idList) {
+        if (idList.isEmpty()) {
             throw new BusinessException("删除的编号不能为空");
         }
-        return sysApiService.updateDelById(ids);
+        return sysApiService.updateDelById(idList);
     }
 
 }

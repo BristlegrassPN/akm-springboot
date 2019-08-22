@@ -35,8 +35,8 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
 
     @Override
-    public int updateDelById(List<String> ids) {
-        return sysResourceMapper.updateDelById(ids);
+    public int updateDelById(List<String> idList) {
+        return sysResourceMapper.updateDelById(idList);
     }
 }
 

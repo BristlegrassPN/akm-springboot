@@ -11,5 +11,5 @@ public interface SysResourceMapper {
 
     List<SysResource> findByAll(SysResource sysResource);
 
-    int updateDelById(List<String> ids);
+    int updateDelById(List<String> idList);
 }

@@ -11,5 +11,5 @@ public interface SysApiMapper {
 
     List<SysApi> findByAll(SysApi sysApi);
 
-    int updateDelById(List<String> ids);
+    int updateDelById(List<String> idList);
 }

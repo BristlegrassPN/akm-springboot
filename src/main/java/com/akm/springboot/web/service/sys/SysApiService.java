@@ -12,7 +12,7 @@ public interface SysApiService {
 
     List<SysApi> findByAll(SysApi record);
 
-    int updateDelById(List<String> ids);
+    int updateDelById(List<String> idList);
 }
 
 

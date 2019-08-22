@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.akm.springboot.web.mapper.sys.SysResourceApiMapper">
+  <resultMap id="BaseResultMap" type="com.akm.springboot.web.domain.sys.SysResourceApi">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="resource_id" jdbcType="VARCHAR" property="resourceId" />
+    <result column="api_id" jdbcType="VARCHAR" property="apiId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, resource_id, api_id
+  </sql>
+  <delete id="deleteByResourceId" parameterType="java.lang.String">
+    delete from sys_resource_api
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into sys_resource_api
+    (id, resource_id, api_id)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.resourceId,jdbcType=VARCHAR}, #{item.apiId,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+
+</mapper>
