@@ -1,7 +1,6 @@
 package com.akm.springboot.web.api.sys;
 
-import com.akm.springboot.core.exception.BusinessException;
-import com.akm.springboot.core.utils.StringUtils;
+import com.akm.springboot.core.utils.AssertUtils;
 import com.akm.springboot.web.domain.sys.SysResource;
 import com.akm.springboot.web.service.sys.SysResourceApiService;
 import com.akm.springboot.web.service.sys.SysResourceService;
@@ -43,19 +42,15 @@ public class SysResourceApi {
     @ApiOperation("根据id批量删除")
     @DeleteMapping("/op/batchDel")
     int batchDel(@RequestBody List<String> idList) {
-        if (idList.isEmpty()) {
-            throw new BusinessException("删除的编号不能为空");
-        }
+        AssertUtils.notEmpty(idList, "删除的编号不能为空");
         return sysResourceService.batchDel(idList);
     }
 
     @ApiOperation("给资源分配api")
-    @PostMapping("/op/updateApi")
-    int updateApi(@ApiParam(value = "apiIdList", required = true) @RequestBody List<String> apiIdList,
+    @PostMapping("/op/updateApiByResourceId")
+    int updateApiByResourceId(@ApiParam(required = true) @RequestBody List<String> apiIdList,
                   @ApiParam(value = "资源编号", required = true) @RequestParam String resourceId) {
-        if (StringUtils.isBlank(resourceId)) {
-            throw new BusinessException("资源编号不能为空");
-        }
-        return sysResourceApiService.updateApi(apiIdList, resourceId);
+        AssertUtils.notBlank(resourceId, "编号不能为空");
+        return sysResourceApiService.updateApiByResourceId(apiIdList, resourceId);
     }
 }

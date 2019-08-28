@@ -12,7 +12,7 @@ public interface SysRoleService{
 
     int insertOrUpdateSelective(SysRole record);
 
-    List<SysRole> findByAll(SysRole sysRole);
-
     int batchDel(List<String> idList);
+
+    List<SysRole> find(Boolean enable, Byte clientType);
 }

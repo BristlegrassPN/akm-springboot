@@ -18,7 +18,7 @@ public class SysResourceApiServiceImpl implements SysResourceApiService {
 
     @Transactional
     @Override
-    public int updateApi(List<String> apiIdList, String resourceId) {
+    public int updateApiByResourceId(List<String> apiIdList, String resourceId) {
         sysResourceApiMapper.deleteByResourceId(resourceId);
         if (apiIdList.size() > 0) {
             List<SysResourceApi> list = new ArrayList<>();

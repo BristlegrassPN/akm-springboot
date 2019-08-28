@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class SysRoleServiceImpl implements SysRoleService{
+public class SysRoleServiceImpl implements SysRoleService {
 
     @Resource
     private SysRoleMapper sysRoleMapper;
@@ -34,7 +34,10 @@ public class SysRoleServiceImpl implements SysRoleService{
     }
 
     @Override
-    public List<SysRole> findByAll(SysRole sysRole) {
+    public List<SysRole> find(Boolean enable, Byte clientType) {
+        SysRole sysRole = new SysRole();
+        sysRole.setEnable(enable);
+        sysRole.setClientType(clientType);
         return sysRoleMapper.findByAll(sysRole);
     }
 

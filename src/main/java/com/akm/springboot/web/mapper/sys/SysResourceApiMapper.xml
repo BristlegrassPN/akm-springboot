@@ -11,10 +11,6 @@
     <!--@mbg.generated-->
     id, resource_id, api_id
   </sql>
-  <delete id="deleteByResourceId" parameterType="java.lang.String">
-    delete from sys_resource_api
-    where resource_id = #{resourceId,jdbcType=VARCHAR}
-  </delete>
   <insert id="batchInsert" parameterType="map">
     <!--@mbg.generated-->
     insert into sys_resource_api
@@ -25,5 +21,9 @@
         )
     </foreach>
   </insert>
+  <delete id="deleteByResourceId" parameterType="java.lang.String">
+    delete from sys_resource_api
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </delete>
 
 </mapper>

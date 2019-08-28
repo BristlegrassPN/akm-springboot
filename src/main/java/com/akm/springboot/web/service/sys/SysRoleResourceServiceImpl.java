@@ -18,7 +18,7 @@ public class SysRoleResourceServiceImpl implements SysRoleResourceService {
 
     @Transactional
     @Override
-    public int updateResource(List<String> resourceIdList, String roleId) {
+    public int updateResourceByRoleId(List<String> resourceIdList, String roleId) {
         sysRoleResourceMapper.deleteByRoleId(roleId);
         if (resourceIdList.size() > 0) {
             List<SysRoleResource> list = new ArrayList<>();

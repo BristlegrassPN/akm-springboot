@@ -9,6 +9,7 @@
     <result column="seq" jdbcType="INTEGER" property="seq"/>
     <result column="client_type" jdbcType="TINYINT" property="clientType"/>
     <result column="enable" jdbcType="BOOLEAN" property="enable"/>
+    <result column="clientTypeName" jdbcType="VARCHAR" property="clientTypeName"/>
     <collection property="resourceIdList" ofType="java.lang.String">
       <constructor>
         <arg column="resourceId"/>
@@ -114,10 +115,11 @@
     role.seq,
     role.client_type,
     role.`enable`,
+    dict.label clientTypeName,
     x.resource_id resourceId
     from sys_role role
-    left join sys_role_resource x
-    on role.id = x.role_id
+    left join sys_role_resource x on role.id = x.role_id
+    left join sys_dict dict on role.client_type = dict.value and dict.type = 'client_type'
     where 1=1 and del = false
     <if test="clientType != null">
       and client_type=#{clientType,jdbcType=TINYINT}

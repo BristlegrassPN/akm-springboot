@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface SysRoleResourceMapper {
-    int deleteByRoleId(String roleId);
-
     int batchInsert(@Param("list") List<SysRoleResource> list);
+
+    int deleteByRoleId(String roleId);
 }

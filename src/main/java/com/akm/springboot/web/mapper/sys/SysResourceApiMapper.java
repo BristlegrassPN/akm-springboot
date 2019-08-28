@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface SysResourceApiMapper {
-    int deleteByResourceId(String resourceId);
-
     int batchInsert(@Param("list") List<SysResourceApi> list);
+
+    int deleteByResourceId(String resourceId);
 }

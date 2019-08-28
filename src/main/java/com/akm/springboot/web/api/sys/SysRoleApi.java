@@ -1,7 +1,6 @@
 package com.akm.springboot.web.api.sys;
 
-import com.akm.springboot.core.exception.BusinessException;
-import com.akm.springboot.core.utils.StringUtils;
+import com.akm.springboot.core.utils.AssertUtils;
 import com.akm.springboot.web.domain.sys.SysRole;
 import com.akm.springboot.web.service.sys.SysRoleResourceService;
 import com.akm.springboot.web.service.sys.SysRoleService;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = {"前端资源(菜单/按钮)管理"})
+@Api(tags = {"角色管理"})
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleApi {
@@ -33,29 +32,26 @@ public class SysRoleApi {
         return sysRoleService.insertOrUpdateSelective(record);
     }
 
-
-    @ApiOperation("查询所有角色")
-    @PostMapping("/view/findAll")
-    List<SysRole> findAll() {
-        return sysRoleService.findByAll(new SysRole());
-    }
-
     @ApiOperation("根据id批量删除")
     @DeleteMapping("/op/batchDel")
     int batchDel(@RequestBody List<String> idList) {
-        if (idList.isEmpty()) {
-            throw new BusinessException("删除的编号不能为空");
-        }
+        AssertUtils.notEmpty(idList, "删除的编号不能为空");
         return sysRoleService.batchDel(idList);
     }
 
     @ApiOperation("给角色分配资源")
-    @PostMapping("/op/updateResource")
-    int updateResource(@ApiParam(value = "apiIdList", required = true) @RequestBody List<String> resourceIdList,
-                       @ApiParam(value = "资源编号", required = true) @RequestParam String roleId) {
-        if (StringUtils.isBlank(roleId)) {
-            throw new BusinessException("资源编号不能为空");
-        }
-        return sysRoleResourceService.updateResource(resourceIdList, roleId);
+    @PostMapping("/op/updateResourceByRoleId")
+    int updateResourceByRoleId(@RequestBody List<String> resourceIdList,
+                               @ApiParam(value = "角色编号", required = true) @RequestParam String roleId) {
+        AssertUtils.notBlank(roleId, "编号不能为空");
+        return sysRoleResourceService.updateResourceByRoleId(resourceIdList, roleId);
+    }
+
+
+    @ApiOperation("查询所有角色")
+    @PostMapping("/view/find")
+    List<SysRole> find(@ApiParam(value = "启用状态，默认true") @RequestParam(required = false) Boolean enable,
+                       @ApiParam(value = "应用类型,对应字典表client_type") @RequestParam(required = false) Byte clientType) {
+        return sysRoleService.find(enable, clientType);
     }
 }

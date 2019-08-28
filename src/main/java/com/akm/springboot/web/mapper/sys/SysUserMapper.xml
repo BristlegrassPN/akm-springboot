@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.akm.springboot.web.mapper.sys.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.akm.springboot.web.domain.sys.SysUserEntity">
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="salt" jdbcType="VARCHAR" property="salt"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="phone" jdbcType="VARCHAR" property="phone"/>
+    <result column="enable" jdbcType="BOOLEAN" property="enable"/>
+    <result column="expired_time" jdbcType="TIMESTAMP" property="expiredTime"/>
+    <result column="del" jdbcType="BOOLEAN" property="del"/>
+  </resultMap>
+  <resultMap id="DetailResultMap" type="com.akm.springboot.web.domain.sys.SysUserDetail">
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="phone" jdbcType="VARCHAR" property="phone"/>
+    <result column="enable" jdbcType="BOOLEAN" property="enable"/>
+    <result column="expired_time" jdbcType="TIMESTAMP" property="expiredTime"/>
+    <collection property="roleList" ofType="com.akm.springboot.web.domain.sys.SysRole">
+      <id property="id" column="roleId"/>
+      <result property="name" column="roleName"/>
+      <result property="clientType" column="clientType"/>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `password`, salt, username, `name`, phone, `enable`, expired_time, del
+  </sql>
+  <insert id="insertSelective" parameterType="com.akm.springboot.web.domain.sys.SysUserEntity">
+    <!--@mbg.generated-->
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="enable != null">
+        `enable`,
+      </if>
+      <if test="expiredTime != null">
+        expired_time,
+      </if>
+      <if test="del != null">
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=BOOLEAN},
+      </if>
+      <if test="expiredTime != null">
+        #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="del != null">
+        #{del,jdbcType=BOOLEAN},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.akm.springboot.web.domain.sys.SysUserEntity">
+    <!--@mbg.generated-->
+    update sys_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        `enable` = #{enable,jdbcType=BOOLEAN},
+      </if>
+      <if test="expiredTime != null">
+        expired_time = #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="del != null">
+        del = #{del,jdbcType=BOOLEAN},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updatePassword">
+    update sys_user
+    set
+    password = #{password,jdbcType=VARCHAR},
+    salt = #{salt,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="deleteByPrimaryKey">
+    update sys_user
+    set del=true
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectOneByIdOrUsername" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_user
+    where 1=1
+    <if test="id != null">
+      and id=#{id,jdbcType=VARCHAR}
+    </if>
+    <if test="username != null">
+      and username=#{username,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="findByAll" resultMap="DetailResultMap">
+    select
+    user.id,
+    user.username,
+    user.`name`,
+    user.phone,
+    user.`enable`,
+    user.expired_time,
+    role.id roleId,
+    role.name roleName,
+    role.client_type clientType
+    from sys_user user
+    left join sys_user_role x on user.id = x.user_id
+    left join sys_role role on role.id = x.role_id and role.del = false and role.enable = true
+    where user.del = false
+    <if test="id != null">
+      and user.id=#{id,jdbcType=VARCHAR}
+    </if>
+    <if test="username != null and username != ''">
+      and user.username like concat('%', #{username,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="name != null and name != ''">
+      and user.`name` like concat('%', #{name,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="phone != null and phone != ''">
+      and user.phone like concat('%', #{phone,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="enable != null">
+      and user.`enable`=#{enable,jdbcType=BOOLEAN}
+    </if>
+    order by user.create_time desc
+  </select>
+
+</mapper>
