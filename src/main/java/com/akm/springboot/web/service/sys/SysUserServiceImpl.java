@@ -47,6 +47,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public int updatePassword(String id, String newPassword) {
         SysUserEntity user = sysUserMapper.selectOneByIdOrUsername(id, null);
+        AssertUtils.notNull(user, "用户不存在");
         String salt = SecureUtil.md5(SecureUtil.sha256(IdUtil.simpleUUID()));
         String password = SecureUtil.md5(SecureUtil.sha256(newPassword) + salt + user.getUsername());
         return sysUserMapper.updatePassword(id, password, salt);
