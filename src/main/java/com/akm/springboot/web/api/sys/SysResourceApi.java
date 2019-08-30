@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = {"前端资源(菜单/按钮)管理"})
 @RestController
@@ -49,8 +50,14 @@ public class SysResourceApi {
     @ApiOperation("给资源分配api")
     @PostMapping("/op/updateApiByResourceId")
     int updateApiByResourceId(@ApiParam(required = true) @RequestBody List<String> apiIdList,
-                  @ApiParam(value = "资源编号", required = true) @RequestParam String resourceId) {
+                              @ApiParam(value = "资源编号", required = true) @RequestParam String resourceId) {
         AssertUtils.notBlank(resourceId, "编号不能为空");
         return sysResourceApiService.updateApiByResourceId(apiIdList, resourceId);
+    }
+
+    @ApiOperation("查询登陆用户的菜单资源")
+    @PostMapping("/view/findMenuResource")
+    List<Map<String, String>> findResource() {
+        return sysResourceService.findResource(1, 1);
     }
 }

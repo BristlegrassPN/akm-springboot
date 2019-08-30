@@ -59,7 +59,7 @@ public class SysUserApi {
 
     @ApiOperation(value = "新增/修改,返回用户id", notes = "由于数据库id是雪花算法生成的纯数字，直接返回String类型，前端js处理会以为是Number类型，由于数值过大，会存在精度丢失问题，所以这里返回Map")
     @PostMapping("/op/insertOrUpdate")
-    Map<String, String> create(@RequestBody SysUserEntity record) {
+    Map<String, String> insertOrUpdate(@RequestBody SysUserEntity record) {
         Map<String, String> map = new HashMap<>();
         if (StringUtils.isBlank(record.getId())) {
             map.put("userId", sysUserService.insertSelective(record));

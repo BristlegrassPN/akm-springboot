@@ -3,6 +3,7 @@ package com.akm.springboot.web.service.sys;
 import com.akm.springboot.web.domain.sys.SysResource;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysResourceService {
 
@@ -14,6 +15,9 @@ public interface SysResourceService {
     List<SysResource> findByAll(SysResource sysResource);
 
     int batchDel(List<String> idList);
+
+    List<Map<String, String>> findResource(Integer type, Integer clientType);
+
 }
 
 

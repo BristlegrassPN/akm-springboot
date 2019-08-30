@@ -152,10 +152,10 @@
     on resource.id = x.resource_id
     where del = false
     <if test="clientType != null">
-      and client_type=#{clientType,jdbcType=TINYINT}
+      and resource.client_type=#{clientType,jdbcType=TINYINT}
     </if>
     <if test="enable != null">
-      and `enable`=#{enable,jdbcType=BOOLEAN}
+      and resource.`enable`=#{enable,jdbcType=BOOLEAN}
     </if>
     order by seq desc
   </select>
@@ -168,5 +168,22 @@
       #{item,jdbcType=INTEGER}
     </foreach>
   </update>
+
+  <select id="findResource" resultType="java.util.Map">
+    select
+    resource.id,
+    resource.parent_id parentId,
+    resource.`name`,
+    resource.code
+    from sys_resource resource
+    where del = false and resource.enable = true
+    <if test="clientType != null">
+      and resource.client_type=#{clientType,jdbcType=TINYINT}
+    </if>
+    <if test="type != null">
+      and resource.type=#{type,jdbcType=TINYINT}
+    </if>
+    order by seq desc
+  </select>
 
 </mapper>

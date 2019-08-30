@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysResourceServiceImpl implements SysResourceService {
@@ -36,6 +37,11 @@ public class SysResourceServiceImpl implements SysResourceService {
     @Override
     public int batchDel(List<String> idList) {
         return sysResourceMapper.batchDel(idList);
+    }
+
+    @Override
+    public List<Map<String, String>> findResource(Integer type, Integer clientType) {
+        return sysResourceMapper.findResource(type, clientType);
     }
 }
 
