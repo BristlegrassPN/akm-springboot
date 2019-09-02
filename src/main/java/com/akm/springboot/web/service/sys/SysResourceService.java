@@ -16,7 +16,7 @@ public interface SysResourceService {
 
     int batchDel(List<String> idList);
 
-    List<Map<String, String>> findResource(Integer type, Integer clientType);
+    List<Map<String, Object>> findResource(Integer type, Integer clientType);
 
 }
 

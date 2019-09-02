@@ -40,7 +40,7 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
 
     @Override
-    public List<Map<String, String>> findResource(Integer type, Integer clientType) {
+    public List<Map<String, Object>> findResource(Integer type, Integer clientType) {
         return sysResourceMapper.findResource(type, clientType);
     }
 }

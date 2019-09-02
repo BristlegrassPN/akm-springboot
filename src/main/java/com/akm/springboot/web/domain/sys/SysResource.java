@@ -11,9 +11,9 @@ import java.util.List;
 @Data
 public class SysResource implements Serializable {
     /**
-     * 编号
+     * 主键
      */
-    @ApiModelProperty(value = "编号")
+    @ApiModelProperty(value = "主键")
     private String id;
 
     /**
@@ -35,10 +35,22 @@ public class SysResource implements Serializable {
     private String name;
 
     /**
+     * 菜单uri
+     */
+    @ApiModelProperty(value = "菜单uri")
+    private String uri;
+
+    /**
      * 资源编码，前端根据该code控制资源的显示隐藏
      */
     @ApiModelProperty(value = "资源编码，前端根据该code控制资源的显示隐藏")
     private String code;
+
+    /**
+     * 资源图标class
+     */
+    @ApiModelProperty(value = "资源图标class")
+    private String icon;
 
     /**
      * 备注
@@ -53,9 +65,9 @@ public class SysResource implements Serializable {
     private Integer seq;
 
     /**
-     * 应用类型1.web 2.app
+     * 应用类型,对应字典表client_type,由于前端分离,后台系统可能要对接多个客户端,如web，app
      */
-    @ApiModelProperty(value = "应用类型1.web 2.app")
+    @ApiModelProperty(value = "应用类型,对应字典表client_type,由于前端分离,后台系统可能要对接多个客户端,如web，app")
     private Byte clientType;
 
     /**

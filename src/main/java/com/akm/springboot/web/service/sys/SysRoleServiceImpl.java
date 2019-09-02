@@ -34,7 +34,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public List<SysRole> find(Boolean enable, Byte clientType) {
+    public List<SysRole> findAll(Boolean enable, Byte clientType) {
         SysRole sysRole = new SysRole();
         sysRole.setEnable(enable);
         sysRole.setClientType(clientType);

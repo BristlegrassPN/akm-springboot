@@ -2,8 +2,7 @@ package com.akm.springboot.web.service.sys;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.akm.springboot.core.utils.AssertUtils;
-import com.akm.springboot.core.utils.Snowflake;
+import com.akm.springboot.core.utils.*;
 import com.akm.springboot.web.domain.sys.SysUserDetail;
 import com.akm.springboot.web.domain.sys.SysUserEntity;
 import com.akm.springboot.web.mapper.sys.SysUserMapper;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
@@ -20,8 +20,9 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserMapper sysUserMapper;
 
     @Override
-    public SysUserEntity login(String username, String password, String clientType) {
+    public String login(String username, String password, String clientType) {
         SysUserEntity user = sysUserMapper.selectOneByIdOrUsername(null, username);
+        AssertUtils.notNull(user, "用户名不存在");
         AssertUtils.isTrue(user.getEnable(), "账号已被禁用");
         AssertUtils.isTrue(!user.getDel(), "账号已失效");
         if (user.getExpiredTime() != null) {
@@ -31,7 +32,24 @@ public class SysUserServiceImpl implements SysUserService {
         AssertUtils.isTrue(p.equals(user.getPassword()), "密码错误");
         user.setPassword(null);
         user.setSalt(null);
-        return user;
+
+
+        // 用户登陆/重新登陆，删除已存在的缓存数据
+        CacheUtils.delByPattern(user.getId());
+
+        // 7 * 24 * 60 * (60000L) 7天
+        // 15 * (60000L) 15分钟
+        long timeout = 15 * (60000L);
+
+        String token = Snowflake.uuid();
+        StringCacheUtils.set(token, user.getId(), timeout, TimeUnit.MILLISECONDS);
+        MapBuilder<String, Object> userInfo = MapBuilder.createDefault()
+                .put("id", user.getId())
+                .put("username", user.getUsername())
+                .put("name", user.getName());
+        CacheUtils.set(user.getId(), userInfo, timeout);
+
+        return token;
     }
 
     @Override

@@ -49,5 +49,9 @@ public class SysUserDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // 模糊搜索查询条件
+    private String searchContent;
+
+    // 用户角色列表
     private List<SysRole> roleList;
 }

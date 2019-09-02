@@ -2,11 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.akm.springboot.web.mapper.sys.SysResourceMapper">
   <resultMap id="BaseResultMap" type="com.akm.springboot.web.domain.sys.SysResource">
+    <!--@mbg.generated-->
     <id column="id" jdbcType="VARCHAR" property="id"/>
     <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
     <result column="type" jdbcType="TINYINT" property="type"/>
     <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="uri" jdbcType="VARCHAR" property="uri"/>
     <result column="code" jdbcType="VARCHAR" property="code"/>
+    <result column="icon" jdbcType="VARCHAR" property="icon"/>
     <result column="remark" jdbcType="VARCHAR" property="remark"/>
     <result column="seq" jdbcType="INTEGER" property="seq"/>
     <result column="client_type" jdbcType="TINYINT" property="clientType"/>
@@ -19,23 +22,26 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, parent_id, `type`, `name`, code, remark, seq, client_type, `enable`
+    id, parent_id, `type`, `name`, uri, code, icon, remark, seq, client_type, `enable`
   </sql>
   <insert id="insertOrUpdate" parameterType="com.akm.springboot.web.domain.sys.SysResource">
     <!--@mbg.generated-->
     insert into sys_resource
-    (id, parent_id, `type`, `name`, code, remark, seq, client_type, `enable`)
+    (id, parent_id, `type`, `name`, uri, code, icon, remark, seq, client_type, `enable`
+    )
     values
     (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
-    #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-    #{seq,jdbcType=INTEGER}, #{clientType,jdbcType=TINYINT}, #{enable,jdbcType=BOOLEAN}
-    )
+    #{name,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
+    #{remark,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{clientType,jdbcType=TINYINT},
+    #{enable,jdbcType=BOOLEAN})
     on duplicate key update
     id = #{id,jdbcType=VARCHAR},
     parent_id = #{parentId,jdbcType=VARCHAR},
     `type` = #{type,jdbcType=TINYINT},
     `name` = #{name,jdbcType=VARCHAR},
+    uri = #{uri,jdbcType=VARCHAR},
     code = #{code,jdbcType=VARCHAR},
+    icon = #{icon,jdbcType=VARCHAR},
     remark = #{remark,jdbcType=VARCHAR},
     seq = #{seq,jdbcType=INTEGER},
     client_type = #{clientType,jdbcType=TINYINT},
@@ -57,8 +63,14 @@
       <if test="name != null">
         `name`,
       </if>
+      <if test="uri != null">
+        uri,
+      </if>
       <if test="code != null">
         code,
+      </if>
+      <if test="icon != null">
+        icon,
       </if>
       <if test="remark != null">
         remark,
@@ -87,8 +99,14 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="uri != null">
+        #{uri,jdbcType=VARCHAR},
+      </if>
       <if test="code != null">
         #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -117,8 +135,14 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="uri != null">
+        uri = #{uri,jdbcType=VARCHAR},
+      </if>
       <if test="code != null">
         code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -141,7 +165,9 @@
     resource.parent_id,
     resource.`type`,
     resource.`name`,
+    resource.uri,
     resource.code,
+    resource.icon,
     resource.remark,
     resource.seq,
     resource.client_type,
@@ -171,19 +197,22 @@
 
   <select id="findResource" resultType="java.util.Map">
     select
-    resource.id,
-    resource.parent_id parentId,
-    resource.`name`,
-    resource.code
+    id,
+    parent_id parentId,
+    `type`,
+    `name`,
+    uri,
+    code,
+    icon
     from sys_resource resource
-    where del = false and resource.enable = true
+    where del = false and enable = true
     <if test="clientType != null">
-      and resource.client_type=#{clientType,jdbcType=TINYINT}
+      and client_type=#{clientType,jdbcType=TINYINT}
     </if>
     <if test="type != null">
-      and resource.type=#{type,jdbcType=TINYINT}
+      and type=#{type,jdbcType=TINYINT}
     </if>
-    order by seq desc
+    order by parent_id, seq desc
   </select>
 
 </mapper>

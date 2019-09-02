@@ -1,5 +1,7 @@
 server:
   port: 8989
+  tomcat:
+    uri-encoding: utf-8
 spring:
   profiles:
     active: dev
@@ -26,6 +28,10 @@ logging:
     root: info
     com.akm.springboot: debug
   path: C:\workspace\java\springboot\logs
+akm:
+  cache-type: redis # local, redis
+  token-secret-key: 6buJAkDmR9uz3weNPbsmmsF6fWH5PunMUhKA
+
 ---
 #debug: true
 spring:

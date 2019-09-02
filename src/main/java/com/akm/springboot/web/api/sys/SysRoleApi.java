@@ -49,9 +49,9 @@ public class SysRoleApi {
 
 
     @ApiOperation("查询所有角色")
-    @PostMapping("/view/find")
-    List<SysRole> find(@ApiParam(value = "启用状态，默认true") @RequestParam(required = false) Boolean enable,
+    @PostMapping("/view/findAll")
+    List<SysRole> find(@ApiParam(value = "启用状态,默认null查询所有") @RequestParam(required = false) Boolean enable,
                        @ApiParam(value = "应用类型,对应字典表client_type") @RequestParam(required = false) Byte clientType) {
-        return sysRoleService.find(enable, clientType);
+        return sysRoleService.findAll(enable, clientType);
     }
 }

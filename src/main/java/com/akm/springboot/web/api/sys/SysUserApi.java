@@ -35,11 +35,17 @@ public class SysUserApi {
 
 
     @ApiOperation("登陆")
-    @PostMapping("/public/login")
-    SysUserEntity login(@ApiParam(value = "用户名", required = true) @RequestParam String username,
-                        @ApiParam(value = "密码", required = true) @RequestParam String password,
-                        @ApiParam(value = "客户端类型", required = true, defaultValue = "1") @RequestParam String clientType) {
+    @PostMapping("/open/login")
+    String login(@ApiParam(value = "用户名", required = true) @RequestParam String username,
+                 @ApiParam(value = "密码", required = true) @RequestParam String password,
+                 @ApiParam(value = "客户端类型", required = true, defaultValue = "1") @RequestParam String clientType) {
         return sysUserService.login(username, password, clientType);
+    }
+
+    @ApiOperation("获取用户信息")
+    @PostMapping("/public/self")
+    String self() {
+        return "测试";
     }
 
     @ApiOperation("用户修改密码")
