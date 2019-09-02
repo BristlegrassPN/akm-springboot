@@ -138,4 +138,19 @@
       #{item,jdbcType=INTEGER}
     </foreach>
   </update>
+
+  <select id="findLoginUserRoleId" resultType="String">
+    select distinct role.id
+    from sys_role role
+           left join sys_user_role x on role.id = x.role_id
+    where role.del = false
+      and role.enable = true
+      and x.user_id = 1
+    <if test="userId != null">
+      and x.user_id=#{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="clientType != null">
+      and client_type=#{clientType,jdbcType=TINYINT}
+    </if>
+  </select>
 </mapper>

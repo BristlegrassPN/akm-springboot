@@ -17,7 +17,7 @@ public interface SysUserService {
 
     int deleteByPrimaryKey(String id);
 
-    String login(String username, String password, String clientType);
+    String login(String username, String password, Byte clientType);
 
     List<SysUserDetail> findByAll(SysUserDetail detail);
 }

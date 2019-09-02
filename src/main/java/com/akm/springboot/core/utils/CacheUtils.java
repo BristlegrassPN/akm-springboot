@@ -3,7 +3,7 @@ package com.akm.springboot.core.utils;
 import com.akm.springboot.core.cache.CacheStorage;
 import com.akm.springboot.core.cache.LocalCacheStorage;
 import com.akm.springboot.core.cache.RedisCacheStorage;
-import com.akm.springboot.core.config.KitPropsConfig;
+import com.akm.springboot.core.config.AkmPropsConfig;
 import com.akm.springboot.core.config.RedisKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +44,8 @@ public class CacheUtils {
     private static CacheStorage<Object> cacheStorage;
 
     static {
-        KitPropsConfig kitProps = SpringContextHolder.getBean(KitPropsConfig.class);
-        if (kitProps != null && KitPropsConfig.CACHE_TYPE_REDIS.equals(kitProps.getCacheType())) {
+        AkmPropsConfig kitProps = SpringContextHolder.getBean(AkmPropsConfig.class);
+        if (kitProps != null && AkmPropsConfig.CACHE_TYPE_REDIS.equals(kitProps.getCacheType())) {
             cacheStorage = new RedisCacheStorage(SpringContextHolder.getBean(RedisTemplate.class));
             logger.info(">> using REDIS as cache.");
         } else {

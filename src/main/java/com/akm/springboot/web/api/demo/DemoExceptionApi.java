@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"全局异常处理测试"})
 @RestController
-@RequestMapping("/demo/exception")
+@RequestMapping("/demo/exception/open")
 public class DemoExceptionApi {
     private static final Logger logger = LoggerFactory.getLogger(DemoExceptionApi.class);
 

@@ -1,6 +1,6 @@
 package com.akm.springboot;
 
-import com.akm.springboot.core.config.KitPropsConfig;
+import com.akm.springboot.core.config.AkmPropsConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import java.util.TimeZone;
 
 @SpringBootApplication
-@EnableConfigurationProperties(KitPropsConfig.class)
+@EnableConfigurationProperties(AkmPropsConfig.class)
 public class SpringbootApplication {
 
     public static void main(String[] args) {

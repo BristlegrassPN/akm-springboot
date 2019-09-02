@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -24,13 +23,26 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     private LoginInterceptor loginInterceptor;
     private List<HttpMessageConverter<?>> messageConverters;
 
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 跨域拦截器需放在最上面
         registry.addInterceptor(corsInterceptor).addPathPatterns("/**");
 
         // 校验token的拦截器
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**");
+        registry
+                .addInterceptor(loginInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/**",
+                        "/swagger-ui.html",
+                        "/webjars/**",
+                        "/csrf",
+                        "/"
+                );
     }
 
     @Override
@@ -42,16 +54,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedHeaders("*")
-                .allowedMethods("*")
-                .allowedOrigins("*")
-                .maxAge(36000)
-                .allowCredentials(true);
-    }
 
     public ObjectMapper getObjectMapper() {
         return new ObjectMapper();

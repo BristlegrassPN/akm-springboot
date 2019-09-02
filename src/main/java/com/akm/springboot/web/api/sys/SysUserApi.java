@@ -38,7 +38,7 @@ public class SysUserApi {
     @PostMapping("/open/login")
     String login(@ApiParam(value = "用户名", required = true) @RequestParam String username,
                  @ApiParam(value = "密码", required = true) @RequestParam String password,
-                 @ApiParam(value = "客户端类型", required = true, defaultValue = "1") @RequestParam String clientType) {
+                 @ApiParam(value = "客户端类型", required = true, defaultValue = "1") @RequestParam Byte clientType) {
         return sysUserService.login(username, password, clientType);
     }
 

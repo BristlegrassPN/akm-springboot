@@ -19,13 +19,13 @@ class CacheWrapper<V> {
     /**
      * 缓存时长(秒)
      */
-    private int expire;
+    private long expire;
 
     CacheWrapper(V cacheObject) {
         this(cacheObject, -1);
     }
 
-    CacheWrapper(V cacheObject, int expire) {
+    CacheWrapper(V cacheObject, long expire) {
         this.cacheObject = cacheObject;
         this.lastLoadTime = System.currentTimeMillis();
         this.expire = expire;
@@ -40,7 +40,7 @@ class CacheWrapper<V> {
         return cacheObject;
     }
 
-    void setExpire(int expire) {
+    void setExpire(long expire) {
         lastLoadTime = System.currentTimeMillis();
         this.expire = expire;
     }

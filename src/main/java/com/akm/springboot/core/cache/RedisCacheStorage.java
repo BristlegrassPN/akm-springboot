@@ -79,8 +79,7 @@ public class RedisCacheStorage implements CacheStorage<Object> {
             redisConnection = redisTemplate.getConnectionFactory().getClusterConnection();
         }
         try {
-            long time = redisConnection.time();
-            return time;
+            return redisConnection.time();
         } finally {
             redisConnection.close();
         }

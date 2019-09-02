@@ -78,8 +78,7 @@ public class StringRedisCacheStorage implements CacheStorage<String> {
             redisConnection = stringRedisTemplate.getConnectionFactory().getClusterConnection();
         }
         try {
-            long time = redisConnection.time();
-            return time;
+            return redisConnection.time();
         } finally {
             redisConnection.close();
         }

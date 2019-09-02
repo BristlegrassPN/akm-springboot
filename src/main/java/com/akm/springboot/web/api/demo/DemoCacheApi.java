@@ -1,7 +1,7 @@
 package com.akm.springboot.web.api.demo;
 
 
-import com.akm.springboot.core.config.KitPropsConfig;
+import com.akm.springboot.core.config.AkmPropsConfig;
 import com.akm.springboot.core.utils.CacheUtils;
 import com.akm.springboot.core.utils.SpringContextHolder;
 import com.akm.springboot.core.utils.StringCacheUtils;
@@ -15,12 +15,12 @@ import java.util.List;
 
 @Api(tags = {"系统缓存测试"})
 @RestController
-@RequestMapping("/demo/cache")
+@RequestMapping("/demo/cache/open")
 public class DemoCacheApi {
 
     @PostMapping(value = "/cacheType", produces = "text/plain;charset=UTF-8")
     String cacheType() {
-        KitPropsConfig kitProps = SpringContextHolder.getBean(KitPropsConfig.class);
+        AkmPropsConfig kitProps = SpringContextHolder.getBean(AkmPropsConfig.class);
         return "当前缓存类型：" + kitProps.getCacheType();
     }
 

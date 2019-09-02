@@ -12,7 +12,7 @@ public interface RedisKeys {
      * 项目中所有key的前缀, 避免不同项目访问同一个redis集群时出现重复key,
      * CacheUtils中的方法会自动加上此前缀, 调用CacheUtils, StringCacheUtils时key无需加此前缀
      */
-    String PREFIX = "backend.service-platform:";
+    String PREFIX = "akm-springboot";
 
     /**
      * 互斥锁mutex的前缀, 完整的key为 PREFIX + NXKEY + key

@@ -64,8 +64,8 @@ public class LocalCacheStorage<V> implements CacheStorage<V> {
     public void set(String key, V value, long timeout, TimeUnit unit) {
         CacheWrapper<V> wrapper;
         if (timeout > 0 && unit != null) {
-            Long expire = unit.toSeconds(timeout);
-            wrapper = new CacheWrapper<>(value, expire.intValue());
+            long expire = unit.toSeconds(timeout);
+            wrapper = new CacheWrapper<>(value, expire);
         } else {
             wrapper = new CacheWrapper<>(value);
         }
@@ -84,8 +84,8 @@ public class LocalCacheStorage<V> implements CacheStorage<V> {
         if (wrapper == null || wrapper.isExpired()) {
             return false;
         }
-        Long expire = unit.toSeconds(timeout);
-        wrapper.setExpire(expire.intValue());
+        long expire = unit.toSeconds(timeout);
+        wrapper.setExpire(expire);
         return true;
     }
 

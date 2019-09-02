@@ -6,6 +6,7 @@ import com.akm.springboot.core.utils.*;
 import com.akm.springboot.web.domain.sys.SysUserDetail;
 import com.akm.springboot.web.domain.sys.SysUserEntity;
 import com.akm.springboot.web.mapper.sys.SysUserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,8 +20,18 @@ public class SysUserServiceImpl implements SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    private SysRoleService sysRoleService;
+
+    @Autowired
+    SysUserServiceImpl(SysRoleService sysRoleService) {
+        this.sysRoleService = sysRoleService;
+    }
+
     @Override
-    public String login(String username, String password, String clientType) {
+    public String login(String username, String password, Byte clientType) {
+        AssertUtils.notBlank(username, "用户名不允许为空");
+        AssertUtils.notBlank(password, "密码不允许为空");
+        AssertUtils.notNull(clientType, "客户端类型不允许为空");
         SysUserEntity user = sysUserMapper.selectOneByIdOrUsername(null, username);
         AssertUtils.notNull(user, "用户名不存在");
         AssertUtils.isTrue(user.getEnable(), "账号已被禁用");
@@ -33,21 +44,26 @@ public class SysUserServiceImpl implements SysUserService {
         user.setPassword(null);
         user.setSalt(null);
 
-
-        // 用户登陆/重新登陆，删除已存在的缓存数据
-        CacheUtils.delByPattern(user.getId());
+        // 用户id
+        String userId = user.getId();
 
         // 7 * 24 * 60 * (60000L) 7天
         // 15 * (60000L) 15分钟
         long timeout = 15 * (60000L);
-
         String token = Snowflake.uuid();
-        StringCacheUtils.set(token, user.getId(), timeout, TimeUnit.MILLISECONDS);
+
+        // 用户登陆/重新登陆，删除已存在的缓存数据
+        CacheUtils.delByPattern(userId);
+        // 缓存token和用户id关系
+        StringCacheUtils.set(token, userId, timeout, TimeUnit.MILLISECONDS);
+        // 获取登陆用户所拥有的角色
+        List<String> roleList = sysRoleService.findLoginUserRoleId(userId, clientType);
         MapBuilder<String, Object> userInfo = MapBuilder.createDefault()
-                .put("id", user.getId())
+                .put("id", userId)
                 .put("username", user.getUsername())
-                .put("name", user.getName());
-        CacheUtils.set(user.getId(), userInfo, timeout);
+                .put("name", user.getName())
+                .put("roleList", roleList);
+        CacheUtils.set(userId, userInfo, timeout);
 
         return token;
     }

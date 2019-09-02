@@ -34,6 +34,11 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    public int batchDel(List<String> idList) {
+        return sysRoleMapper.batchDel(idList);
+    }
+
+    @Override
     public List<SysRole> findAll(Boolean enable, Byte clientType) {
         SysRole sysRole = new SysRole();
         sysRole.setEnable(enable);
@@ -42,8 +47,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public int batchDel(List<String> idList) {
-        return sysRoleMapper.batchDel(idList);
+    public List<String> findLoginUserRoleId(String userId, Byte clientType) {
+        return sysRoleMapper.findLoginUserRoleId(userId, clientType);
     }
 
 }

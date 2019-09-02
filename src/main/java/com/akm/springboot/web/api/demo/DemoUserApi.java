@@ -14,7 +14,7 @@ import java.util.List;
 
 @Api(tags = {"用户管理api，用于测试，可以随意增删该查"})
 @RestController
-@RequestMapping("/demo/user")
+@RequestMapping("/demo/user/open")
 public class DemoUserApi {
 
     private DemoUserService demoUserService;

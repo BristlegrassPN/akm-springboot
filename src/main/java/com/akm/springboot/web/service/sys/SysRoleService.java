@@ -15,4 +15,6 @@ public interface SysRoleService{
     int batchDel(List<String> idList);
 
     List<SysRole> findAll(Boolean enable, Byte clientType);
+
+    List<String> findLoginUserRoleId(String userId, Byte clientType);
 }
