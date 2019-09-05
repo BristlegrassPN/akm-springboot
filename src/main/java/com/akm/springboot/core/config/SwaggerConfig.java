@@ -1,5 +1,6 @@
 package com.akm.springboot.core.config;
 
+import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,16 +26,16 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
-                .build().useDefaultResponseMessages(false);
-//                .securitySchemes(Lists.newArrayList(apiKey()));
+                .build().useDefaultResponseMessages(false)
+                .securitySchemes(Lists.newArrayList(apiKey()));
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("后台REST服务API文档")
+                .title("akm-springboot后台API文档")
                 .description("本文档由 [springfox-swagger2](http://springfox.github.io/springfox/) 自动生成。\n\n"
-                        + "如何在此页面的请求时带上jwt token\n1. 使用AuthApi里的`/v1/login`登录获取access\\_token\n2. 使用页面右上角的`Authorize`按钮,"
-                        + " 输入Bearer *access\\_token*进行登录\n3. 登录后,当前页面的\"Try it out!\"请求将自动带上JWT token")
+                        + "如何在此页面的请求时带上token\n1. 使用用户管理中的`/user/open/login`登录，登陆成功返回token\n2. 使用页面右上角的`Authorize`按钮,"
+                        + " 输入token值\n3. 此时即可登陆用户有权访问的接口")
                 .version("1.0")
                 .build();
     }

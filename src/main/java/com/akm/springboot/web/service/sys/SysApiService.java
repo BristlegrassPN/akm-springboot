@@ -13,6 +13,8 @@ public interface SysApiService {
     List<SysApi> findByAll(SysApi record);
 
     int batchDel(List<String> idList);
+
+    List<String> getUriByRoleId(String roleId);
 }
 
 

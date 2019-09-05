@@ -1,6 +1,7 @@
 package com.akm.springboot.core.utils;
 
 import com.akm.springboot.core.exception.BusinessException;
+import com.akm.springboot.core.exception.CodeMsg;
 
 import java.util.Collection;
 import java.util.Map;
@@ -30,6 +31,12 @@ public class AssertUtils {
         }
     }
 
+    public static void isTrue(boolean expression, CodeMsg codeMsg) throws BusinessException {
+        if (!expression) {
+            throw new BusinessException(codeMsg);
+        }
+    }
+
     /**
      * 如果对象为{@code null}, 则抛出异常
      *
@@ -53,6 +60,12 @@ public class AssertUtils {
         }
     }
 
+    public static void notNull(Object object, CodeMsg codeMsg) throws BusinessException {
+        if (object == null) {
+            throw new BusinessException(codeMsg);
+        }
+    }
+
     /**
      * 如果字符串为{@code null}、空字符串或仅包含空白字符, 则抛出异常
      *
@@ -63,6 +76,12 @@ public class AssertUtils {
     public static void notBlank(String text, String message) throws BusinessException {
         if (StringUtils.isBlank(text)) {
             throw new BusinessException(message);
+        }
+    }
+
+    public static void notBlank(String text, CodeMsg codeMsg) throws BusinessException {
+        if (StringUtils.isBlank(text)) {
+            throw new BusinessException(codeMsg);
         }
     }
 

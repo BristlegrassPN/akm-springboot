@@ -8,8 +8,6 @@ public interface SysRoleService{
 
     int deleteByPrimaryKey(String id);
 
-    int insertOrUpdate(SysRole record);
-
     int insertOrUpdateSelective(SysRole record);
 
     int batchDel(List<String> idList);

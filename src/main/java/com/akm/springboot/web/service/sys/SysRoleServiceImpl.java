@@ -1,5 +1,7 @@
 package com.akm.springboot.web.service.sys;
 
+import com.akm.springboot.core.config.RedisKeys;
+import com.akm.springboot.core.utils.CacheUtils;
 import com.akm.springboot.core.utils.Snowflake;
 import com.akm.springboot.core.utils.StringUtils;
 import com.akm.springboot.web.domain.sys.SysRole;
@@ -21,21 +23,29 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public int insertOrUpdate(SysRole record) {
-        return sysRoleMapper.insertOrUpdate(record);
-    }
-
-    @Override
     public int insertOrUpdateSelective(SysRole record) {
         if (StringUtils.isBlank(record.getId())) {
             record.setId(Snowflake.uuid());
         }
-        return sysRoleMapper.insertOrUpdateSelective(record);
+        int num = sysRoleMapper.insertOrUpdateSelective(record);
+        // 更新角色需要删除缓存数据
+        if (StringUtils.isNotBlank(record.getId())) {
+            CacheUtils.del(RedisKeys.ROLE_URI.concat(record.getId()));
+        }
+        return num;
     }
 
     @Override
     public int batchDel(List<String> idList) {
-        return sysRoleMapper.batchDel(idList);
+        if (idList.isEmpty()) {
+            return 0;
+        }
+        int num = sysRoleMapper.batchDel(idList);
+        // 删除角色需要删除缓存数据
+        for (String roleId : idList) {
+            CacheUtils.del(RedisKeys.ROLE_URI.concat(roleId));
+        }
+        return num;
     }
 
     @Override

@@ -25,7 +25,7 @@ public interface RedisKeys {
     String JTI_BLACKLIST = "jti-blacklist:";
 
     /**
-     * 某权限角色的permission列表key前缀, 完整的key为 PREFIX + ROLE_PERMISSIONS + role_code
+     * 某角色对应的Api uri列表key前缀, 完整的key为 PREFIX + ROLE_URI + role_code
      */
-    String ROLE_PERMISSIONS = "role-permissions:";
+    String ROLE_URI = "role-uri:";
 }

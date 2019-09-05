@@ -25,21 +25,6 @@
     delete from sys_role
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insertOrUpdate" parameterType="com.akm.springboot.web.domain.sys.SysRole">
-    <!--@mbg.generated-->
-    insert into sys_role
-    (id, `name`, remark, seq, client_type, `enable`)
-    values
-    (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER},
-    #{clientType,jdbcType=TINYINT}, #{enable,jdbcType=BOOLEAN})
-    on duplicate key update
-    id = #{id,jdbcType=VARCHAR},
-    `name` = #{name,jdbcType=VARCHAR},
-    remark = #{remark,jdbcType=VARCHAR},
-    seq = #{seq,jdbcType=INTEGER},
-    client_type = #{clientType,jdbcType=TINYINT},
-    `enable` = #{enable,jdbcType=BOOLEAN}
-  </insert>
   <insert id="insertOrUpdateSelective" parameterType="com.akm.springboot.web.domain.sys.SysRole">
     <!--@mbg.generated-->
     insert into sys_role

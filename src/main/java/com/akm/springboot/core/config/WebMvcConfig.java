@@ -1,15 +1,11 @@
 package com.akm.springboot.core.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 在这里进行Spring MVC的配置, 如 interceptor, messageConverter, formatter, viewResolver等
@@ -20,9 +16,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     private CorsInterceptor corsInterceptor;
 
     @Resource
-    private LoginInterceptor loginInterceptor;
-    private List<HttpMessageConverter<?>> messageConverters;
-
+    private AuthorizationInterceptor authorizationInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -31,7 +25,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
         // 校验token的拦截器
         registry
-                .addInterceptor(loginInterceptor)
+                .addInterceptor(authorizationInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/v2/api-docs",
@@ -52,18 +46,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
-
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
-    }
-
-    //2.2：解决No converter found for return value of type: xxxx
-    public MappingJackson2HttpMessageConverter messageConverter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(getObjectMapper());
-        return converter;
     }
 
 }

@@ -1,7 +1,10 @@
 package com.akm.springboot.web.mapper.sys;
 
 import com.akm.springboot.web.domain.sys.SysApi;
-import org.apache.ibatis.annotations.Mapper;import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface SysApiMapper {
@@ -12,4 +15,6 @@ public interface SysApiMapper {
     List<SysApi> findByAll(SysApi sysApi);
 
     int batchDel(List<String> idList);
+
+    List<String> getUriByRoleId(@Param("roleId") String roleId);
 }
