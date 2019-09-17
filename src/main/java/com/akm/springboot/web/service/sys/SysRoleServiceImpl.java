@@ -7,6 +7,7 @@ import com.akm.springboot.core.utils.StringUtils;
 import com.akm.springboot.web.domain.sys.SysRole;
 import com.akm.springboot.web.mapper.sys.SysRoleMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -35,15 +36,18 @@ public class SysRoleServiceImpl implements SysRoleService {
         return num;
     }
 
+    @Transactional
     @Override
     public int batchDel(List<String> idList) {
         if (idList.isEmpty()) {
             return 0;
         }
         int num = sysRoleMapper.batchDel(idList);
-        // 删除角色需要删除缓存数据
-        for (String roleId : idList) {
-            CacheUtils.del(RedisKeys.ROLE_URI.concat(roleId));
+        if (num != 0) {
+            // 删除角色需要删除缓存数据
+            for (String roleId : idList) {
+                CacheUtils.del(RedisKeys.ROLE_URI.concat(roleId));
+            }
         }
         return num;
     }

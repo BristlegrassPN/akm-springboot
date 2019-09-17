@@ -38,15 +38,18 @@ import java.util.Set;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler implements ErrorController {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    /**
+     * 同步错误跳转到open/error
+     */
     @Override
     public String getErrorPath() {
-        return "/error";
+        return "/open/error";
     }
 
     /**
      * 处理进入controller前失败的异常,如404
      */
-    @RequestMapping(value = "/error")
+    @RequestMapping(value = "/open/error")
     public ResultBean error(HttpServletResponse response, HttpServletRequest request) {
         int status = response.getStatus();
         String msg = "请求出错";
