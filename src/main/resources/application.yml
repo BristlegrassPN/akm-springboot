@@ -29,7 +29,7 @@ logging:
     com.akm.springboot: debug
   path: C:\workspace\java\springboot\logs
 akm:
-  cache-type: redis # local, redis
+  cache-type: local # local, redis
   token-secret-key: 6buJAkDmR9uz3weNPbsmmsF6fWH5PunMUhKA
 
 ---

@@ -6,6 +6,7 @@ import com.akm.springboot.core.utils.AssertUtils;
 import com.akm.springboot.core.utils.StringUtils;
 import com.akm.springboot.web.domain.sys.SysUserDetail;
 import com.akm.springboot.web.domain.sys.SysUserEntity;
+import com.akm.springboot.web.domain.sys.SysUserLoginRequestWrapper;
 import com.akm.springboot.web.service.sys.SysUserRoleService;
 import com.akm.springboot.web.service.sys.SysUserService;
 import com.github.pagehelper.PageHelper;
@@ -36,10 +37,8 @@ public class SysUserApi {
 
     @ApiOperation("登陆")
     @PostMapping("/open/login")
-    String login(@ApiParam(value = "用户名", required = true) @RequestParam String username,
-                 @ApiParam(value = "密码", required = true) @RequestParam String password,
-                 @ApiParam(value = "客户端类型", required = true, defaultValue = "1") @RequestParam Byte clientType) {
-        return sysUserService.login(username, password, clientType);
+    String login(@RequestBody SysUserLoginRequestWrapper login) {
+        return sysUserService.login(login.getUsername(), login.getPassword(), login.getClientType());
     }
 
     @ApiOperation("获取用户信息")
@@ -50,9 +49,9 @@ public class SysUserApi {
 
     @ApiOperation("用户修改密码")
     @PostMapping("/public/updatePassword")
-    int updatePassword(@ApiParam(value = "用户编号", required = true) @RequestParam String id,
-                       @ApiParam(value = "旧密码", required = true) @RequestParam String oldPassword,
-                       @ApiParam(value = "新密码", required = true) @RequestParam String newPassword) {
+    int updatePassword(@ApiParam(value = "用户编号", required = true)  String id,
+                       @ApiParam(value = "旧密码", required = true)  String oldPassword,
+                       @ApiParam(value = "新密码", required = true)  String newPassword) {
         return sysUserService.updatePassword(id, oldPassword, newPassword);
     }
 

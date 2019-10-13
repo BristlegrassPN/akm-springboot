@@ -56,7 +56,7 @@ public class SysResourceApi {
     }
 
     @ApiOperation("查询登陆用户的菜单资源")
-    @PostMapping("/view/findMenuResource")
+    @PostMapping("/public/findMenuResource")
     List<Map<String, Object>> findResource() {
         return sysResourceService.findResource(null, 1);
     }
