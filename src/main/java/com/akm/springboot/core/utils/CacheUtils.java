@@ -17,13 +17,7 @@ import java.util.function.Supplier;
 
 /**
  * 缓存相关的帮助类, 提供了操作缓存的公用方法。
- * <p>
  * 此类中的方法基于RedisTemplate, 根据配置, key和value可以使用不同的序列化策略。
- * </p>
- *
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期二, 九月 12, 2017
- * @version 1.0
  */
 @SuppressWarnings("unchecked")
 public class CacheUtils {

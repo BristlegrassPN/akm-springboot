@@ -8,10 +8,6 @@ import java.util.Map;
 
 /**
  * 基于ThreadLocal的线程相关上下文帮助类, 用于在同一线程下传递变量.
- *
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期四, 九月 07, 2017
- * @version 1.0
  */
 public class ThreadContext {
 

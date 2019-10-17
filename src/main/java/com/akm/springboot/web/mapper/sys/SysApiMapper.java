@@ -1,10 +1,7 @@
 package com.akm.springboot.web.mapper.sys;
 
 import com.akm.springboot.web.domain.sys.SysApi;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;import org.apache.ibatis.annotations.Param;import java.util.List;
 
 @Mapper
 public interface SysApiMapper {

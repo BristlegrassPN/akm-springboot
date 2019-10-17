@@ -2,8 +2,9 @@ package com.akm.springboot.web.domain.sys;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @ApiModel(value = "com.akm.springboot.web.domain.sys.SysApi")
 @Data
@@ -19,6 +20,12 @@ public class SysApi implements Serializable {
      */
     @ApiModelProperty(value = "父id，0表示根节点")
     private String parentId;
+
+    /**
+     * 类型：1目录，2uri
+     */
+    @ApiModelProperty(value = "类型：1目录，2uri")
+    private Byte type;
 
     /**
      * api接口名称

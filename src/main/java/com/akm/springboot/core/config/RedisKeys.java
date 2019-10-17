@@ -2,10 +2,6 @@ package com.akm.springboot.core.config;
 
 /**
  * 将所有的redis key统一定义在此, 避免key四处分散, 导致后期维护redis时无法找到所有的key
- *
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期三, 九月 13, 2017
- * @version 1.0
  */
 public interface RedisKeys {
     /**

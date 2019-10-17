@@ -65,20 +65,21 @@ public class SysUserServiceImpl implements SysUserService {
 //        StringCacheUtils.set(token, userId, timeout, TimeUnit.MILLISECONDS);
 
         // 获取登陆用户所拥有的角色
-        List<String> roleList = sysRoleService.findLoginUserRoleId(userId, clientType);
+        List<Map<String,String>> roleList = sysRoleService.findRoleByUser(userId, clientType);
+        String currentRoleId = roleList.isEmpty() ? "" : roleList.get(0).get("id");
         Map<String, String> userInfo = MapBuilder.createString()
                 .put(AkmConstants.TOKEN, token)
                 .put(AkmConstants.CLIENT_TYPE, String.valueOf(clientType))
                 .put(AkmConstants.USER_ID, userId)
                 .put(AkmConstants.USERNAME, user.getUsername())
-                .put(AkmConstants.CURRENT_ROLE_ID, roleList.isEmpty() ? "" : roleList.get(0))
+                .put(AkmConstants.CURRENT_ROLE_ID, currentRoleId)
                 .build(); // 指定一个角色为当前角色
 
         CacheUtils.set(token, userInfo, timeout); // 常用数据缓存
 
         return MapBuilder.createDefault()
                 .put(AkmConstants.TOKEN, token)
-                .put(AkmConstants.CURRENT_ROLE_ID, roleList.isEmpty() ? "" : roleList.get(0))
+                .put(AkmConstants.CURRENT_ROLE_ID, currentRoleId)
                 .put("roleList", roleList)
                 .put("name", user.getName()) // 真实姓名
                 .build();

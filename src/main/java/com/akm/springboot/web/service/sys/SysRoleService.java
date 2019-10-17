@@ -3,6 +3,7 @@ package com.akm.springboot.web.service.sys;
 import com.akm.springboot.web.domain.sys.SysRole;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysRoleService{
 
@@ -14,5 +15,5 @@ public interface SysRoleService{
 
     List<SysRole> findAll(Boolean enable, Byte clientType);
 
-    List<String> findLoginUserRoleId(String userId, Byte clientType);
+    List<Map<String,String>> findRoleByUser(String userId, Byte clientType);
 }

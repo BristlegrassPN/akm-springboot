@@ -45,7 +45,7 @@ public class SysApiServiceImpl implements SysApiService {
         if (StringUtils.isBlank(roleId)) {
             return null;
         }
-        // 先尝试从缓存获取, 缓存不存在才从数据库获取
+        // 先尝试从缓存获取, 缓存不存在才从数据库获取,更新或删除用户角色，需要清缓存
         return CacheUtils.cacheAndGet(RedisKeys.ROLE_URI.concat(roleId), -1, () -> sysApiMapper.getUriByRoleId(roleId));
     }
 }

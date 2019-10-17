@@ -17,10 +17,6 @@ import java.util.function.Supplier;
  * <p>
  * 此类中的方法基于StringRedisTemplate, key和value都采用StringRedisSerializer序列化策略。
  * </p>
- *
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期二, 九月 12, 2017
- * @version 1.0
  */
 public class StringCacheUtils {
 

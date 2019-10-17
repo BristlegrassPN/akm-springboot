@@ -3,13 +3,6 @@ package com.akm.springboot.core.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Convenient builder class to build a map in fluent mode.
- *
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期四, 八月 31, 2017
- * @version 1.0
- */
 public class MapBuilder<K, V> {
     final private Map<K, V> map;
 

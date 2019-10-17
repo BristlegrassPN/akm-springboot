@@ -7,11 +7,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-/**
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期一, 十月 09, 2017
- * @version 1.0
- */
 public class LocalCacheStorage<V> implements CacheStorage<V> {
 
     private final ConcurrentHashMap<String, CacheWrapper<V>> cache = new ConcurrentHashMap<>();

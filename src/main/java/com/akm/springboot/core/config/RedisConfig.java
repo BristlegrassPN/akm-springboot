@@ -16,13 +16,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.text.SimpleDateFormat;
 
-/**
- * Configure the default redis tempalte.
- *
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期四, 九月 07, 2017
- * @version 1.0
- */
 @Configuration
 public class RedisConfig {
 

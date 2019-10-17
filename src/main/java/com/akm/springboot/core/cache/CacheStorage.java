@@ -4,11 +4,6 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author <a href="mailto:ningyaobai@gzkit.com.cn">bernix</a>
- * 星期一, 十月 09, 2017
- * @version 1.0
- */
 public interface CacheStorage<V> {
 
     /**

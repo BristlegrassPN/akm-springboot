@@ -5,6 +5,7 @@
     <!--@mbg.generated-->
     <id column="id" jdbcType="VARCHAR" property="id"/>
     <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
+    <result column="type" jdbcType="TINYINT" property="type"/>
     <result column="name" jdbcType="VARCHAR" property="name"/>
     <result column="uri" jdbcType="VARCHAR" property="uri"/>
     <result column="remark" jdbcType="VARCHAR" property="remark"/>
@@ -12,18 +13,20 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, parent_id, `name`, uri, remark, seq
+    id, parent_id, `type`, `name`, uri, remark, seq
   </sql>
   <insert id="insertOrUpdate" parameterType="com.akm.springboot.web.domain.sys.SysApi">
     <!--@mbg.generated-->
     insert into sys_api
-    (id, parent_id, `name`, uri, remark, seq)
+    (id, parent_id, `type`, `name`, uri, remark, seq)
     values
-    (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-    #{uri,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER})
+    (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
+    #{name,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+    #{seq,jdbcType=INTEGER})
     on duplicate key update
     id = #{id,jdbcType=VARCHAR},
     parent_id = #{parentId,jdbcType=VARCHAR},
+    `type` = #{type,jdbcType=TINYINT},
     `name` = #{name,jdbcType=VARCHAR},
     uri = #{uri,jdbcType=VARCHAR},
     remark = #{remark,jdbcType=VARCHAR},
@@ -38,6 +41,9 @@
       </if>
       <if test="parentId != null">
         parent_id,
+      </if>
+      <if test="type != null">
+        `type`,
       </if>
       <if test="name != null">
         `name`,
@@ -60,6 +66,9 @@
       <if test="parentId != null">
         #{parentId,jdbcType=VARCHAR},
       </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
@@ -80,6 +89,9 @@
       </if>
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
       </if>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
@@ -141,6 +153,7 @@
     inner join sys_role_resource rr on ra.resource_id = rr.resource_id
     inner join sys_role role on rr.role_id = role.id
     where api.del = false
+    and api.type = 2
     and role.del = false
     and role.enable = true
     and role.id = #{roleId,jdbcType=VARCHAR}

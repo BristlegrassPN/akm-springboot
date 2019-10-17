@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SysRoleMapper {
@@ -16,6 +17,6 @@ public interface SysRoleMapper {
 
     int batchDel(List<String> idList);
 
-    List<String> findLoginUserRoleId(@Param("userId") String userId, @Param("clientType") Byte clientType);
+    List<Map<String, String>> findRoleByUser(@Param("userId") String userId, @Param("clientType") Byte clientType);
 
 }

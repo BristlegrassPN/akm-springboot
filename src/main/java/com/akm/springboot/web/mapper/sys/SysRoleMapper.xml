@@ -124,7 +124,7 @@
     </foreach>
   </update>
 
-  <select id="findLoginUserRoleId" resultType="String">
+  <select id="findRoleByUser" resultType="map">
     select distinct role.id
     from sys_role role
            left join sys_user_role x on role.id = x.role_id

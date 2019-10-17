@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
@@ -61,8 +62,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public List<String> findLoginUserRoleId(String userId, Byte clientType) {
-        return sysRoleMapper.findLoginUserRoleId(userId, clientType);
+    public List<Map<String,String>> findRoleByUser(String userId, Byte clientType) {
+        return sysRoleMapper.findRoleByUser(userId, clientType);
     }
 
 }
