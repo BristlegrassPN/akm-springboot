@@ -32,4 +32,3 @@ out/
 .vscode/
 
 gradle/
-/src/main/java/com/akm/springboot/web/api/demo/DemoDaoApi.java
