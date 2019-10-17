@@ -6,7 +6,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 
 public class AESUtils {
 
@@ -85,20 +84,20 @@ public class AESUtils {
             e.printStackTrace();
         }
 
-        Base64 base64 = new Base64();
-        String str = "*&^&*%^&%$$#@!@@!&^*(/";
-        byte[] b = str.getBytes();
-        String encode = base64.encodeToString(b);
-        String encode2 = new String(Base64.encodeBase64(b));
-        System.out.println("encode:" + encode);
-        try {
-            System.out.println("decodeBase64:" + Base64.decodeBase64(str));
-            System.out.println("decode:" + base64.decode(encode));
-            System.out.println("decode:" + new String(base64.decode(encode), "UTF-8"));
-            System.out.println("decode:" + new String(base64.decode(encode2), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        Base64 base64 = new Base64();
+//        String str = "*&^&*%^&%$$#@!@@!&^*(/";
+//        byte[] b = str.getBytes();
+//        String encode = base64.encodeToString(b);
+//        String encode2 = new String(Base64.encodeBase64(b));
+//        System.out.println("encode:" + encode);
+//        try {
+//            System.out.println("decodeBase64:" + Base64.decodeBase64(str));
+//            System.out.println("decode:" + base64.decode(encode));
+//            System.out.println("decode:" + new String(base64.decode(encode), "UTF-8"));
+//            System.out.println("decode:" + new String(base64.decode(encode2), "UTF-8"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

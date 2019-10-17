@@ -10,8 +10,6 @@ import java.util.List;
 public interface SysRoleMapper {
     int deleteByPrimaryKey(String id);
 
-    int insertOrUpdate(SysRole record);
-
     int insertOrUpdateSelective(SysRole record);
 
     List<SysRole> findByAll(SysRole sysRole);

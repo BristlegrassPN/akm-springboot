@@ -37,7 +37,7 @@ public class SysUserApi {
 
     @ApiOperation("登陆")
     @PostMapping("/open/login")
-    String login(@RequestBody SysUserLoginRequestWrapper login) {
+    Map<String, Object> login(@RequestBody SysUserLoginRequestWrapper login) {
         return sysUserService.login(login.getUsername(), login.getPassword(), login.getClientType());
     }
 

@@ -197,20 +197,24 @@
 
   <select id="findResource" resultType="java.util.Map">
     select
-    id,
-    parent_id parentId,
-    `type`,
-    `name`,
-    uri,
-    code,
-    icon
+    resource.id,
+    resource.parent_id parentId,
+    resource.`type`,
+    resource.`name`,
+    resource.uri,
+    resource.code,
+    resource.icon
     from sys_resource resource
+    left join sys_role_resource x on resource.id = x.resource_id
     where del = false and enable = true
+    <if test="type != null">
+      and type=#{type,jdbcType=TINYINT}
+    </if>
     <if test="clientType != null">
       and client_type=#{clientType,jdbcType=TINYINT}
     </if>
-    <if test="type != null">
-      and type=#{type,jdbcType=TINYINT}
+    <if test="roleId != null">
+      and x.role_id=#{roleId,jdbcType=VARCHAR}
     </if>
     order by parent_id, seq desc
   </select>

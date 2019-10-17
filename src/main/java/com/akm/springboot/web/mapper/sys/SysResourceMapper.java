@@ -13,5 +13,5 @@ public interface SysResourceMapper {
 
     int batchDel(List<String> idList);
 
-    List<Map<String, Object>> findResource(@Param("type") Integer type, @Param("clientType") Integer clientType);
+    List<Map<String, Object>> findResource(@Param("type") Integer type, @Param("clientType") Integer clientType, @Param("roleId") String roleId);
 }

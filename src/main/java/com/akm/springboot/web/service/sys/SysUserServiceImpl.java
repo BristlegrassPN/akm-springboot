@@ -2,7 +2,11 @@ package com.akm.springboot.web.service.sys;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.akm.springboot.core.utils.*;
+import com.akm.springboot.core.config.AkmConstants;
+import com.akm.springboot.core.utils.AssertUtils;
+import com.akm.springboot.core.utils.CacheUtils;
+import com.akm.springboot.core.utils.MapBuilder;
+import com.akm.springboot.core.utils.Snowflake;
 import com.akm.springboot.web.domain.sys.SysUserDetail;
 import com.akm.springboot.web.domain.sys.SysUserEntity;
 import com.akm.springboot.web.mapper.sys.SysUserMapper;
@@ -12,7 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
@@ -28,7 +32,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public String login(String username, String password, Byte clientType) {
+    public Map<String, Object> login(String username, String password, Byte clientType) {
         AssertUtils.notBlank(username, "用户名不允许为空");
         AssertUtils.notBlank(password, "密码不允许为空");
         AssertUtils.notNull(clientType, "客户端类型不允许为空");
@@ -41,31 +45,43 @@ public class SysUserServiceImpl implements SysUserService {
         }
         String p = SecureUtil.md5(SecureUtil.sha256(password) + user.getSalt() + username);
         AssertUtils.isTrue(p.equals(user.getPassword()), "密码错误");
+        // 清楚敏感数据
         user.setPassword(null);
         user.setSalt(null);
 
         // 用户id
         String userId = user.getId();
 
+        // 用户登陆/重新登陆，删除已存在的缓存数据
+        CacheUtils.delByPattern(userId);
+
+        String token = userId + Snowflake.uuid();
+
         // 7 * 24 * 60 * (60000L) 7天
         // 15 * (60000L) 15分钟
         long timeout = 15 * (60000L);
-        String token = Snowflake.uuid();
 
-        // 用户登陆/重新登陆，删除已存在的缓存数据
-        CacheUtils.delByPattern(userId);
         // 缓存token和用户id关系
-        StringCacheUtils.set(token, userId, timeout, TimeUnit.MILLISECONDS);
+//        StringCacheUtils.set(token, userId, timeout, TimeUnit.MILLISECONDS);
+
         // 获取登陆用户所拥有的角色
         List<String> roleList = sysRoleService.findLoginUserRoleId(userId, clientType);
-        MapBuilder<String, Object> userInfo = MapBuilder.createDefault()
-                .put("id", userId)
-                .put("username", user.getUsername())
-                .put("name", user.getName())
-                .put("roleList", roleList);
-        CacheUtils.set(userId, userInfo, timeout);
+        Map<String, String> userInfo = MapBuilder.createString()
+                .put(AkmConstants.TOKEN, token)
+                .put(AkmConstants.CLIENT_TYPE, String.valueOf(clientType))
+                .put(AkmConstants.USER_ID, userId)
+                .put(AkmConstants.USERNAME, user.getUsername())
+                .put(AkmConstants.CURRENT_ROLE_ID, roleList.isEmpty() ? "" : roleList.get(0))
+                .build(); // 指定一个角色为当前角色
 
-        return token;
+        CacheUtils.set(token, userInfo, timeout); // 常用数据缓存
+
+        return MapBuilder.createDefault()
+                .put(AkmConstants.TOKEN, token)
+                .put(AkmConstants.CURRENT_ROLE_ID, roleList.isEmpty() ? "" : roleList.get(0))
+                .put("roleList", roleList)
+                .put("name", user.getName()) // 真实姓名
+                .build();
     }
 
     @Override

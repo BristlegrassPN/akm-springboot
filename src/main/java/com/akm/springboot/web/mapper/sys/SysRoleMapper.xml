@@ -130,12 +130,12 @@
            left join sys_user_role x on role.id = x.role_id
     where role.del = false
       and role.enable = true
-      and x.user_id = 1
     <if test="userId != null">
       and x.user_id=#{userId,jdbcType=VARCHAR}
     </if>
     <if test="clientType != null">
       and client_type=#{clientType,jdbcType=TINYINT}
     </if>
+    order by seq desc
   </select>
 </mapper>

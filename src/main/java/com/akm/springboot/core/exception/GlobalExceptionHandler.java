@@ -1,6 +1,6 @@
 package com.akm.springboot.core.exception;
 
-import com.akm.springboot.core.domain.ResultBean;
+import com.akm.springboot.core.domain.RestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -39,24 +39,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * 同步错误跳转到open/error
+     * 同步错误跳转到/error
      */
     @Override
     public String getErrorPath() {
-        return "/open/error";
+        return "/error";
     }
 
     /**
      * 处理进入controller前失败的异常,如404
      */
-    @RequestMapping(value = "/open/error")
-    public ResultBean error(HttpServletResponse response, HttpServletRequest request) {
+    @RequestMapping(value = "/error")
+    public RestResult error(HttpServletResponse response, HttpServletRequest request) {
         int status = response.getStatus();
         String msg = "请求出错";
         if (status == 404) {
             msg = "未找到请求地址,请检查地址输入是否有误";
         }
-        return ResultBean.fail(status, msg);
+        return RestResult.fail(status, msg);
     }
 
     /**
@@ -65,19 +65,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ex.printStackTrace();
-        ResultBean<String> resultBean = ResultBean.fail(status.value(), "", ex.toString());
+        RestResult<String> restResult = RestResult.fail(status.value(), "", ex.toString());
         if (ex instanceof HttpRequestMethodNotSupportedException) {
             Set<HttpMethod> supportedHttpMethods = ((HttpRequestMethodNotSupportedException) ex).getSupportedHttpMethods();
             String method = ((HttpRequestMethodNotSupportedException) ex).getMethod();
-            resultBean.setResult(String.format("请求方法[%s]不被支持,支持%s", method, supportedHttpMethods));
+            restResult.setData(String.format("请求方法[%s]不被支持,支持%s", method, supportedHttpMethods));
         }
         if (ex instanceof NoHandlerFoundException) {
-            resultBean.setResult("未找到处理方法，请求url可能不正确：" + ex.toString());
+            restResult.setData("未找到处理方法，请求url可能不正确：" + ex.toString());
         }
         if (ex instanceof HttpMessageNotReadableException) {
-            resultBean.setResult("请求参数解析失败：" + ex.toString());
+            restResult.setData("请求参数解析失败：" + ex.toString());
         }
-        return new ResponseEntity<>(resultBean, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(restResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -85,27 +85,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
      * 返回状态码: 510,前端可根据是510判断是业务异常
      */
     @ExceptionHandler({BusinessException.class})
-    public ResponseEntity<ResultBean> businessException(HttpServletRequest request, BusinessException ex) {
+    public ResponseEntity<RestResult> businessException(HttpServletRequest request, BusinessException ex) {
         this.consoleLog(request, ex);
-        ResultBean resultBean = ResultBean.fail(ex.getCode(), ex.getMessage());
-        return new ResponseEntity<>(resultBean, HttpStatus.NOT_EXTENDED);
+        RestResult restResult = RestResult.fail(ex.getCode(), ex.getMessage());
+        return new ResponseEntity<>(restResult, HttpStatus.NOT_EXTENDED);
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
-    public ResponseEntity<ResultBean> dataIntegrityViolationException(HttpServletRequest request, Exception ex) {
+    public ResponseEntity<RestResult> dataIntegrityViolationException(HttpServletRequest request, Exception ex) {
         this.consoleLog(request, ex);
-        ResultBean<String> resultBean = ResultBean.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "", "数据库执行操作异常：" + ex.toString());
-        return new ResponseEntity<>(resultBean, HttpStatus.INTERNAL_SERVER_ERROR);
+        RestResult<String> restResult = RestResult.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "", "数据库执行操作异常：" + ex.toString());
+        return new ResponseEntity<>(restResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
      * 处理其他运行时发生的异常
      */
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<ResultBean> exception(HttpServletRequest request, Exception ex) {
+    public ResponseEntity<RestResult> exception(HttpServletRequest request, Exception ex) {
         this.consoleLog(request, ex);
-        ResultBean<String> resultBean = ResultBean.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "", ex.toString());
-        return new ResponseEntity<>(resultBean, HttpStatus.INTERNAL_SERVER_ERROR);
+        RestResult<String> restResult = RestResult.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "", "运行时异常：" + ex.toString());
+        return new ResponseEntity<>(restResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private <T extends Throwable> void consoleLog(HttpServletRequest request, T ex) {

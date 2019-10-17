@@ -3,8 +3,7 @@ package com.akm.springboot.core.config;
 import com.akm.springboot.core.exception.CodeMsg;
 import com.akm.springboot.core.utils.AssertUtils;
 import com.akm.springboot.core.utils.CacheUtils;
-import com.akm.springboot.core.utils.MapBuilder;
-import com.akm.springboot.core.utils.StringCacheUtils;
+import com.akm.springboot.core.utils.ThreadContext;
 import com.akm.springboot.web.service.sys.SysApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -38,19 +37,19 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         AssertUtils.notBlank(token, CodeMsg.Unauthorized);
-        String userId = StringCacheUtils.get(token);
-        AssertUtils.notNull(userId, CodeMsg.TokenExpired);
-        Object userObj = CacheUtils.get(userId);
-        AssertUtils.notNull(userObj, CodeMsg.TokenExpired);
-        MapBuilder<String, Object> mapBuilder = (MapBuilder<String, Object>) userObj;
-        Map<String, Object> userInfo = mapBuilder.build();
+        Map<String, String> userInfo = CacheUtils.get(token);
+        AssertUtils.notNull(userInfo, CodeMsg.TokenExpired);
+        ThreadContext.set(AkmConstants.TOKEN, token);
+        ThreadContext.set(AkmConstants.USER_ID, userInfo.get(AkmConstants.USER_ID));
+        ThreadContext.set(AkmConstants.CLIENT_TYPE, userInfo.get(AkmConstants.CLIENT_TYPE));
+        String roleId = userInfo.get(AkmConstants.CURRENT_ROLE_ID);
+        ThreadContext.set(AkmConstants.CURRENT_ROLE_ID, roleId);
         if (isPublicApi(requestUri)) {
             return true;
         }
-        Object roleObj = userInfo.get("roleList");
-        AssertUtils.notNull(roleObj, CodeMsg.Forbidden);
-        List<String> roleList = (List<String>) roleObj;
-        AssertUtils.isTrue(isAccessApi(requestUri, roleList), CodeMsg.Forbidden);
+//        AssertUtils.notNull(roleId, CodeMsg.Forbidden);
+//        AssertUtils.isTrue(isAccessApi(requestUri, roleId), CodeMsg.Forbidden);
+
         return true;
     }
 
@@ -60,7 +59,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
      * 若包含则不需要权限即可访问
      */
     private boolean isOpenApi(String requestUri) {
-        if (requestUri.contains("/open/")) {
+        if (requestUri.contains("/open/") || requestUri.equals("/error")) {
             return true;
         }
         List<String> openUrls = akmPropsConfig.getOpenUrls();
@@ -89,21 +88,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     /**
      * 判断requestUri是否有权限访问
      */
-    private boolean isAccessApi(String requestUri, List<String> roleList) {
-        if (roleList.isEmpty()) {
+    private boolean isAccessApi(String requestUri, String roleId) {
+        // 根据roleId查询对应的api，判断该请求是否有权限
+        List<String> uriList = sysApiService.getUriByRoleId(roleId);
+        if (uriList == null || uriList.isEmpty()) {
             return false;
         }
-        for (String roleId : roleList) {
-            // 根据roleId查询对应的api，判断该请求是否有权限
-            List<String> uriList = sysApiService.getUriByRoleId(roleId);
-            if (uriList == null || uriList.isEmpty()) {
-                continue;
-            }
-            // 验证是否有任何匹配的url
-            if (uriList.stream().anyMatch(url -> pathMatcher.match(url, requestUri))) {
-                return true;
-            }
-        }
-        return false;
+        // 验证是否有任何匹配的url
+        return uriList.stream().anyMatch(url -> pathMatcher.match(url, requestUri));
     }
 }

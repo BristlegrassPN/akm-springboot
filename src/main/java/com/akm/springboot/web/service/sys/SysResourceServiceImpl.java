@@ -1,12 +1,15 @@
 package com.akm.springboot.web.service.sys;
 
+import com.akm.springboot.core.config.AkmConstants;
 import com.akm.springboot.core.utils.Snowflake;
 import com.akm.springboot.core.utils.StringUtils;
+import com.akm.springboot.core.utils.ThreadContext;
 import com.akm.springboot.web.domain.sys.SysResource;
 import com.akm.springboot.web.mapper.sys.SysResourceMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +43,16 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
 
     @Override
-    public List<Map<String, Object>> findResource(Integer type, Integer clientType) {
-        return sysResourceMapper.findResource(type, clientType);
+    public List<Map<String, Object>> findResource(Integer type) {
+        String roleId = ThreadContext.get(AkmConstants.CURRENT_ROLE_ID);
+        if (roleId == null) {
+            return new ArrayList<>();
+        }
+        Integer clientType = Integer.valueOf(ThreadContext.get(AkmConstants.CLIENT_TYPE));
+        if (clientType == null) {
+            return new ArrayList<>();
+        }
+        return sysResourceMapper.findResource(type, clientType, roleId);
     }
 }
 

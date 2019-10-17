@@ -34,7 +34,7 @@ public class SysResourceApi {
     }
 
 
-    @ApiOperation("查询所有api")
+    @ApiOperation("查询所有资源")
     @PostMapping("/view/findAll")
     List<SysResource> findAll() {
         return sysResourceService.findByAll(new SysResource());
@@ -55,9 +55,15 @@ public class SysResourceApi {
         return sysResourceApiService.updateApiByResourceId(apiIdList, resourceId);
     }
 
-    @ApiOperation("查询登陆用户的菜单资源")
-    @PostMapping("/public/findMenuResource")
+    @ApiOperation(value = "查询登陆用户所拥有的资源")
+    @PostMapping("/public/findResource")
     List<Map<String, Object>> findResource() {
-        return sysResourceService.findResource(null, 1);
+        return sysResourceService.findResource(null);
+    }
+
+    @ApiOperation(value = "根据资源类型查询登陆用户所拥有的资源", notes = "resourceType参数为空则查所有类型，1目录，2菜单，3按钮，4其他")
+    @PostMapping("/public/findResourceByType")
+    List<Map<String, Object>> findResource(@ApiParam(value = "资源类型") @RequestParam Integer resourceType) {
+        return sysResourceService.findResource(resourceType);
     }
 }

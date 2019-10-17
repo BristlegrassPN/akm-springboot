@@ -46,8 +46,7 @@ public class SysApiServiceImpl implements SysApiService {
             return null;
         }
         // 先尝试从缓存获取, 缓存不存在才从数据库获取
-        List<String> uriList = CacheUtils.cacheAndGet(RedisKeys.ROLE_URI.concat(roleId), -1, () -> sysApiMapper.getUriByRoleId(roleId));
-        return uriList;
+        return CacheUtils.cacheAndGet(RedisKeys.ROLE_URI.concat(roleId), -1, () -> sysApiMapper.getUriByRoleId(roleId));
     }
 }
 
