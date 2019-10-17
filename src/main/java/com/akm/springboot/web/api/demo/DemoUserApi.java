@@ -33,7 +33,6 @@ public class DemoUserApi {
     @ApiOperation("分页查询用户列表")
     @PostMapping("/view/findPage")
     PageResult<DemoUser> findPage(@RequestBody(required = false) PageQuery<DemoUser> pageQuery) {
-        System.out.println("");
         PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize(), pageQuery.getOrderBy());
         List<DemoUser> list = demoUserService.findByAll(pageQuery.getCondition());
         return new PageResult<>(list);
