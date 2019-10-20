@@ -1,5 +1,6 @@
 # akm-springboot
 * 基于前后端分离的开发方式，提供api接口，供客户端调用
+* sql脚本在doc目录下，管理员账号密码admin/123456
 
 ### hutool工具类
 https://www.hutool.club/docs  
