@@ -16,12 +16,12 @@ public interface RedisKeys {
     String NXKEY = "nx:";
 
     /**
-     * jwt token黑名单的前缀, 完整的key为 PREFIX + JTI_BLACKLIST + jti
-     */
-    String JTI_BLACKLIST = "jti-blacklist:";
-
-    /**
      * 某角色对应的Api uri列表key前缀, 完整的key为 PREFIX + ROLE_URI + role_code
      */
     String ROLE_URI = "role-uri:";
+
+    /**
+     * token前缀
+     */
+    String TOKEN = "token";
 }

@@ -20,7 +20,7 @@ public class SysRoleResourceServiceImpl implements SysRoleResourceService {
     @Override
     public int updateResourceByRoleId(List<String> resourceIdList, String roleId) {
         sysRoleResourceMapper.deleteByRoleId(roleId);
-        if (resourceIdList.size() > 0) {
+        if (!resourceIdList.isEmpty()) {
             List<SysRoleResource> list = new ArrayList<>();
             for (String resourceId : resourceIdList) {
                 SysRoleResource bean = new SysRoleResource();

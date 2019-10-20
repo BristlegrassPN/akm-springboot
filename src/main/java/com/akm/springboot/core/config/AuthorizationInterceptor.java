@@ -37,7 +37,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         AssertUtils.notBlank(token, CodeMsg.Unauthorized);
-        Map<String, String> userInfo = CacheUtils.get(token);
+        Map<String, String> userInfo = CacheUtils.get(RedisKeys.TOKEN.concat(token));
         AssertUtils.notNull(userInfo, CodeMsg.TokenExpired);
         ThreadContext.set(AkmConstants.TOKEN, token);
         ThreadContext.set(AkmConstants.USER_ID, userInfo.get(AkmConstants.USER_ID));
@@ -47,8 +47,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         if (isPublicApi(requestUri)) {
             return true;
         }
-//        AssertUtils.notNull(roleId, CodeMsg.Forbidden);
-//        AssertUtils.isTrue(isAccessApi(requestUri, roleId), CodeMsg.Forbidden);
+        AssertUtils.notNull(roleId, CodeMsg.Forbidden);
+        AssertUtils.isTrue(isAccessApi(requestUri, roleId), CodeMsg.Forbidden);
 
         return true;
     }

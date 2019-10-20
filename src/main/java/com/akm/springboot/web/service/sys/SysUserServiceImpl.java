@@ -3,6 +3,7 @@ package com.akm.springboot.web.service.sys;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.akm.springboot.core.config.AkmConstants;
+import com.akm.springboot.core.config.RedisKeys;
 import com.akm.springboot.core.utils.AssertUtils;
 import com.akm.springboot.core.utils.CacheUtils;
 import com.akm.springboot.core.utils.MapBuilder;
@@ -53,16 +54,13 @@ public class SysUserServiceImpl implements SysUserService {
         String userId = user.getId();
 
         // 用户登陆/重新登陆，删除已存在的缓存数据
-        CacheUtils.delByPattern(userId);
+        CacheUtils.delByPattern(RedisKeys.TOKEN.concat(userId));
 
         String token = userId + Snowflake.uuid();
 
         // 7 * 24 * 60 * (60000L) 7天
         // 15 * (60000L) 15分钟
         long timeout = 15 * (60000L);
-
-        // 缓存token和用户id关系
-//        StringCacheUtils.set(token, userId, timeout, TimeUnit.MILLISECONDS);
 
         // 获取登陆用户所拥有的角色
         List<Map<String,String>> roleList = sysRoleService.findRoleByUser(userId, clientType);
@@ -75,7 +73,8 @@ public class SysUserServiceImpl implements SysUserService {
                 .put(AkmConstants.CURRENT_ROLE_ID, currentRoleId)
                 .build(); // 指定一个角色为当前角色
 
-        CacheUtils.set(token, userInfo, timeout); // 常用数据缓存
+        // 缓存token及用户信息
+        CacheUtils.set(RedisKeys.TOKEN.concat(token), userInfo, timeout);
 
         return MapBuilder.createDefault()
                 .put(AkmConstants.TOKEN, token)
