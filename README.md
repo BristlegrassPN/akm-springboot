@@ -27,8 +27,8 @@ https://www.jianshu.com/p/5c28a26e0e3e
 #### 数据库
 * 数据库使用mysql数据库，字符串utf8mb4，排序规则utf8mb4_general_ci
 * 主表id均使用varchar(20)，值为雪花算法生成的id，可以使用`Snowflake.uuid()`生成
-* 表名全部小写，多个单词用下划线分割，按模块使用统一前缀，如：`sys_`，`_`
-* 字段全部小写，多个单词用下划线分割，主业务表需要添加create_time,update_time，del等字段，参考sys_表
+* 表名全部小写，多个单词用下划线分割，按模块使用统一前缀，如：`sys_`
+* 字段全部小写，多个单词用下划线分割，主业务表需要添加create_time，update_time，del等字段，参考sys_表
 * 外键暂不添加外键索引，外键备注必要时添加上对应的表名
 
 ### 缓存
@@ -45,20 +45,21 @@ https://www.jianshu.com/p/5c28a26e0e3e
 ### 权限拦截器
 * 在`AuthorizationInterceptor.java`中做权限校验，根据访问的url验证用户是否有访问api权限
 * 本框架针对api的uri有4种约定
-  > 1. uri包含`/view/`：表示该接口是查询类，分配权限时可以使用通配符“*”，如`/user/view/**`，表示用户拥有/user下所有查询接口
+  > 1. uri包含`/view/`：表示该接口是查询类，分配权限时可以使用通配符“*”，如`/user/view/**`，表示用户拥有/user下所有查询类接口权限
   > 1. uri包含`/op/`：表示该接口是操作类
   > 1. uri包含`/open/`：表示该接口可以直接访问，不需要鉴权   
-  > 1. uri包含`/public/`：表示该接口可以只要登陆则可以访问
-* 注意：用户有多个角色时，同时只允许一个角色访问系统，在登陆接口指定当前用户默认角色，所以前端需要实现切换角色功能，后端缓存钟需要修改默认角色
+  > 1. uri包含`/public/`：表示该接口只要登陆则可以访问
+* 注意：用户有多个角色时，同时只允许一个角色访问系统，在登陆接口指定当前用户默认角色，所以前端需要实现切换角色功能，后端缓存种也需要响应修改
 
 
 ### 异常处理
-* 在`GlobalExceptionHandler.java`中做全局异常处理，具体处理逻辑可以查看此类
+* 在`GlobalExceptionHandler.java`中做全局异常处理，具体处理逻辑可以查看该类
 * 异常按处理阶段分4种情况
-  > 1. 请求未能到达系统，此时系统无法处理该异常，前端一响应状态码为0，可以提示系统繁忙或网络出错，如系统未启动
+  > 1. 请求未能到达系统，此时系统无法处理该异常，前端响应状态码一般为0，可以提示系统繁忙或网络出错，如系统未启动
   > 1. 请求被系统接收，系统不能处理，如接口不存在，响应状态码为404
   > 1. 请求进入接口失败，如参数不存在，参数解析失败，请求方法不被支持，系统统一返回响应码500
-  > 1. 请求成功进入接口发生异常，根据是否捕获或处理分两种请求，如果未捕获或处理返回响应码500，否在抛出业务异常BusinessException
+  > 1. 请求成功进入接口发生异常，根据是否捕获或处理分两种请求，如果未捕获或处理返回响应码500，否在抛出业务异常BusinessException，
+                 >目前业务业务异常约定返回的状态码是510(可以在GlobalExceptionHandler中修改)，前端根据该状态码可以弹出友好提示
 * 业务异常处理形式如下
     ```
       try {
@@ -68,11 +69,11 @@ https://www.jianshu.com/p/5c28a26e0e3e
          throw new BusinessException("某某业务处理失败");
       }
     ```
-      ```
+    ```
       // 使用AssertUtils
-       AssertUtils.notBlank(password, "密码不允许为空");
-       AssertUtils.notNull(user, "用户名不存在");
-      ```
+      AssertUtils.notBlank(password, "密码不允许为空");
+      AssertUtils.notNull(user, "用户名不存在");
+    ```
     ```
      // 使用CodeMsg
      AssertUtils.notNull(roleId, CodeMsg.Forbidden);
